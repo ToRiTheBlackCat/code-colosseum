@@ -1,6 +1,6 @@
 # ⚔️ CodeColosseum - The Algorithmic Battle Arena
 
-![.NET 8.0](https://img.shields.io/badge/.NET-8.0-purple)
+![.NET 9.0](https://img.shields.io/badge/.NET-9.0-purple)
 ![Architecture](https://img.shields.io/badge/Architecture-Modular_Monolith-blue)
 ![React](https://img.shields.io/badge/Frontend-React_Vite-cyan)
 ![AI](https://img.shields.io/badge/AI-Semantic_Kernel-green)
