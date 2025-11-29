@@ -59,13 +59,30 @@ interface SubmissionStats {
   averageMemory: string;
 }
 
+const starterCodeByLanguage: Record<string, string> = {
+  typescript: `function twoSum(nums: number[], target: number): number[] {\n    // Write your solution here\n    \n}`,
+  javascript: `/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    // Write your solution here\n    \n};`,
+  python: `class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        # Write your solution here\n        pass`,
+  java: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Write your solution here\n        \n    }\n}`,
+  cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your solution here\n        \n    }\n};`,
+  go: `func twoSum(nums []int, target int) []int {\n    // Write your solution here\n    \n}`,
+  rust: `impl Solution {\n    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n        // Write your solution here\n        \n    }\n}`,
+};
+
 export function ProblemDetail({ problemId, onToggleAIMentor, showAIMentor }: ProblemDetailProps) {
   const problem = problemData[1]; // Using problem 1 as example
-  const [code, setCode] = useState(problem.starterCode);
-  const [activeTab, setActiveTab] = useState<'description' | 'submissions' | 'solutions'>('description');
+  const [language, setLanguage] = useState('typescript');
+  const [code, setCode] = useState(starterCodeByLanguage[language]);
+  const [activeTab, setActiveTab] = useState<'description' | 'submissions' | 'solutions' | 'discussions'>('description');
   const [testResults, setTestResults] = useState<TestResult[] | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [submissionStats, setSubmissionStats] = useState<SubmissionStats | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleLanguageChange = (newLang: string) => {
+    setLanguage(newLang);
+    setCode(starterCodeByLanguage[newLang]);
+  };
 
   const handleRunCode = () => {
     setIsRunning(true);
@@ -102,8 +119,13 @@ export function ProblemDetail({ problemId, onToggleAIMentor, showAIMentor }: Pro
   };
 
   const handleSubmit = () => {
+    setSubmitting(true);
     setIsRunning(true);
+    
+    // Simulate submission process
     setTimeout(() => {
+      setSubmitting(false);
+      
       // Generate random percentiles for demo
       const runtimePercentile = Math.floor(Math.random() * 30) + 70; // 70-99%
       const memoryPercentile = Math.floor(Math.random() * 40) + 60; // 60-99%
@@ -136,7 +158,7 @@ export function ProblemDetail({ problemId, onToggleAIMentor, showAIMentor }: Pro
       });
       
       setIsRunning(false);
-    }, 2000);
+    }, 3000);
   };
 
   const getDifficultyColor = (difficulty: string) => {
@@ -176,6 +198,14 @@ export function ProblemDetail({ problemId, onToggleAIMentor, showAIMentor }: Pro
             }`}
           >
             Solutions
+          </button>
+          <button
+            onClick={() => setActiveTab('discussions')}
+            className={`px-4 py-2 rounded-lg transition-all ${
+              activeTab === 'discussions' ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            Discussions
           </button>
         </div>
 
@@ -229,16 +259,128 @@ export function ProblemDetail({ problemId, onToggleAIMentor, showAIMentor }: Pro
           )}
 
           {activeTab === 'submissions' && (
-            <div className="text-center py-12 text-gray-400">
-              <Clock className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No submissions yet</p>
-              <p className="text-sm mt-2">Submit your solution to see it here</p>
+            <div className="space-y-6">
+              <h3 className="text-xl mb-4">Top Submissions</h3>
+              {[
+                { runtime: '28ms', beats: 98.5, memory: '42.1 MB', language: 'TypeScript', user: 'CodeMaster' },
+                { runtime: '32ms', beats: 95.2, memory: '42.8 MB', language: 'Python', user: 'AlgoQueen' },
+                { runtime: '35ms', beats: 91.7, memory: '43.2 MB', language: 'JavaScript', user: 'DevNinja' },
+                { runtime: '38ms', beats: 87.3, memory: '43.9 MB', language: 'Java', user: 'ByteBeast' },
+              ].map((sub, idx) => (
+                <div key={idx} className="bg-[#121212] border border-gray-800 rounded-lg p-4 hover:border-purple-500/30 transition-all">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${
+                        idx === 0 ? 'from-yellow-500 to-orange-500' :
+                        idx === 1 ? 'from-gray-400 to-gray-600' :
+                        idx === 2 ? 'from-orange-600 to-orange-800' :
+                        'from-purple-500 to-pink-500'
+                      } flex items-center justify-center text-sm`}>
+                        #{idx + 1}
+                      </div>
+                      <div>
+                        <div className="text-purple-400">@{sub.user}</div>
+                        <div className="text-sm text-gray-500">{sub.language}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-green-400">Beats {sub.beats}%</div>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-blue-400" />
+                      <span className="text-blue-400">{sub.runtime}</span>
+                    </div>
+                    <div className="text-gray-400">{sub.memory}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
           {activeTab === 'solutions' && (
-            <div className="text-center py-12 text-gray-400">
-              <p>Solutions will be available after you solve the problem</p>
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-xl p-6 text-center">
+                <h3 className="text-xl mb-3">Official Solution</h3>
+                <p className="text-gray-400 mb-4">Unlock expert explanations and optimal approaches</p>
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <div className="px-4 py-2 bg-[#121212] rounded-lg">
+                    <div className="text-sm text-gray-400">Hint 1</div>
+                    <div className="text-purple-400">50 coins</div>
+                  </div>
+                  <div className="px-4 py-2 bg-[#121212] rounded-lg">
+                    <div className="text-sm text-gray-400">Hint 2</div>
+                    <div className="text-purple-400">100 coins</div>
+                  </div>
+                  <div className="px-4 py-2 bg-[#121212] rounded-lg">
+                    <div className="text-sm text-gray-400">Full Solution</div>
+                    <div className="text-purple-400">200 coins</div>
+                  </div>
+                </div>
+                <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-lg transition-all">
+                  Unlock Hint 1 (50 coins)
+                </button>
+              </div>
+
+              <div>
+                <h3 className="text-xl mb-4">Community Solutions</h3>
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-[#121212] border border-gray-800 rounded-lg p-4 mb-3 hover:border-purple-500/30 transition-all cursor-pointer">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm">
+                          U{i}
+                        </div>
+                        <div>
+                          <div>Hash Map Approach - O(n) Time</div>
+                          <div className="text-sm text-gray-500">by User{i} • 2 days ago</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1 text-green-400">
+                          <span>↑</span>
+                          <span>{142 - i * 20}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'discussions' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl">Discussions</h3>
+                <button className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg transition-all">
+                  New Discussion
+                </button>
+              </div>
+              
+              {[
+                { title: 'Optimal approach explanation', author: 'AlgoMaster', replies: 24, votes: 145, time: '2h ago' },
+                { title: 'Can anyone explain the hash map solution?', author: 'Beginner123', replies: 12, votes: 67, time: '5h ago' },
+                { title: 'Alternative solution using two pointers', author: 'CodeGuru', replies: 8, votes: 89, time: '1d ago' },
+                { title: 'Time complexity question', author: 'Student99', replies: 15, votes: 43, time: '2d ago' },
+              ].map((discussion, idx) => (
+                <div key={idx} className="bg-[#121212] border border-gray-800 rounded-lg p-4 hover:border-purple-500/30 transition-all cursor-pointer">
+                  <div className="flex items-start gap-3">
+                    <div className="flex flex-col items-center gap-1 pt-1">
+                      <button className="text-gray-400 hover:text-green-400 transition-colors">↑</button>
+                      <div className="text-sm text-purple-400">{discussion.votes}</div>
+                      <button className="text-gray-400 hover:text-red-400 transition-colors">↓</button>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-lg mb-1 hover:text-purple-400 transition-colors">{discussion.title}</h4>
+                      <div className="text-sm text-gray-500">
+                        <span className="text-purple-400">@{discussion.author}</span> • {discussion.replies} replies • {discussion.time}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -278,8 +420,36 @@ export function ProblemDetail({ problemId, onToggleAIMentor, showAIMentor }: Pro
         </div>
 
         <div className="flex-1 overflow-hidden">
-          <CodeEditor code={code} onChange={setCode} />
+          <CodeEditor code={code} onChange={setCode} language={language} onLanguageChange={handleLanguageChange} />
         </div>
+
+        {/* Submission Animation */}
+        {submitting && (
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-[#121212] border border-purple-500/50 rounded-2xl p-12 text-center">
+              <div className="w-24 h-24 mx-auto mb-6 relative">
+                <div className="absolute inset-0 border-4 border-purple-500/20 rounded-full" />
+                <div className="absolute inset-0 border-4 border-transparent border-t-purple-500 rounded-full animate-spin" />
+                <div className="absolute inset-4 border-4 border-transparent border-t-pink-500 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }} />
+              </div>
+              <h3 className="text-2xl mb-2">Submitting Solution...</h3>
+              <div className="text-gray-400 space-y-1">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Compiling code</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                  <span>Running test cases</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                  <span>Calculating performance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Test Results */}
         {testResults && (

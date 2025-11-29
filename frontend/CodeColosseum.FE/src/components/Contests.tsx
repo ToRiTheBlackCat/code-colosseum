@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Trophy, Clock, Users, Calendar, Award, TrendingUp, Zap, Star, Medal, Crown } from 'lucide-react';
+import { ContestRoom } from './ContestRoom';
 
 interface Contest {
   id: number;
@@ -95,6 +96,11 @@ const pastContests = [
 
 export function Contests() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past' | 'rankings'>('upcoming');
+  const [inContest, setInContest] = useState<number | null>(null);
+
+  if (inContest !== null) {
+    return <ContestRoom contestId={inContest} onExit={() => setInContest(null)} />;
+  }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -269,6 +275,7 @@ export function Contests() {
               </div>
 
               <button
+                onClick={() => contest.status === 'live' && setInContest(contest.id)}
                 className={`w-full py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
                   contest.status === 'live'
                     ? 'bg-green-500 hover:bg-green-600 text-white'

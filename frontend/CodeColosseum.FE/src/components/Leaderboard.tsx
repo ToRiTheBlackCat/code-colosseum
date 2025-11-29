@@ -1,5 +1,6 @@
 import { Trophy, Medal, TrendingUp, Zap, Crown } from 'lucide-react';
 import { useState } from 'react';
+import { UserProfileModal } from './UserProfileModal';
 
 interface LeaderboardEntry {
   rank: number;
@@ -27,6 +28,7 @@ const leaderboardData: LeaderboardEntry[] = [
 
 export function Leaderboard() {
   const [timeRange, setTimeRange] = useState<'daily' | 'weekly' | 'monthly' | 'alltime'>('weekly');
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -155,7 +157,8 @@ export function Leaderboard() {
               {leaderboardData.map((entry, idx) => (
                 <tr
                   key={entry.rank}
-                  className={`border-b border-gray-800 hover:bg-gray-900/50 transition-colors ${
+                  onClick={() => setSelectedUserId(entry.rank)}
+                  className={`border-b border-gray-800 hover:bg-gray-900/50 transition-colors cursor-pointer ${
                     idx < 3 ? 'bg-gradient-to-r from-purple-500/5 to-transparent' : ''
                   }`}
                 >
@@ -207,6 +210,10 @@ export function Leaderboard() {
           </div>
         </div>
       </div>
+
+      {selectedUserId && (
+        <UserProfileModal userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
+      )}
     </div>
   );
 }

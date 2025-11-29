@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Flame, Award, TrendingUp, Target, CheckCircle2, Zap, Crown, Star, Trophy } from 'lucide-react';
+import { Calendar, Flame, Award, TrendingUp, Code2, Target, Clock, CheckCircle2, Zap, Crown, Star, Gift, Trophy, Medal } from 'lucide-react';
 import { ActivityHeatmap } from './ActivityHeatmap';
 import { SkillsRadar } from './SkillsRadar';
 import { BadgesDisplay } from './BadgesDisplay';
