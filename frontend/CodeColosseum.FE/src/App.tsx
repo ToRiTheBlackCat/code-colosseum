@@ -7,13 +7,20 @@ import { AIMentor } from './components/AIMentor';
 import { UserProfile } from './components/UserProfile';
 import { Contests } from './components/Contests';
 import { Shop } from './components/Shop';
+import { MeetingLobby } from './components/MeetingLobby';
+import { MeetingRoom } from './components/MeetingRoom';
 
-type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop';
+type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('profile');
   const [selectedProblemId, setSelectedProblemId] = useState<number | null>(null);
   const [showAIMentor, setShowAIMentor] = useState(false);
+  const [meetingState, setMeetingState] = useState<{ inMeeting: boolean; meetingCode: string; isHost: boolean }>({
+    inMeeting: false,
+    meetingCode: '',
+    isHost: false,
+  });
 
   const handleSelectProblem = (id: number) => {
     setSelectedProblemId(id);
@@ -23,6 +30,14 @@ export default function App() {
   const handleBackToProblems = () => {
     setCurrentView('problems');
     setSelectedProblemId(null);
+  };
+
+  const handleJoinMeeting = (meetingCode: string, isHost: boolean) => {
+    setMeetingState({ inMeeting: true, meetingCode, isHost });
+  };
+
+  const handleLeaveMeeting = () => {
+    setMeetingState({ inMeeting: false, meetingCode: '', isHost: false });
   };
 
   return (
@@ -53,6 +68,18 @@ export default function App() {
         {currentView === 'contests' && <Contests />}
         
         {currentView === 'shop' && <Shop />}
+        
+        {currentView === 'meeting' && !meetingState.inMeeting && (
+          <MeetingLobby onJoinMeeting={handleJoinMeeting} />
+        )}
+
+        {currentView === 'meeting' && meetingState.inMeeting && (
+          <MeetingRoom
+            meetingCode={meetingState.meetingCode}
+            isHost={meetingState.isHost}
+            onLeave={handleLeaveMeeting}
+          />
+        )}
       </main>
 
       {showAIMentor && currentView === 'problem-detail' && (

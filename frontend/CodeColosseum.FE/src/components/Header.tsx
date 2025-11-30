@@ -1,6 +1,6 @@
-import { Code2, Trophy, Swords, Zap, User, ShoppingBag, Coins } from 'lucide-react';
+import { Code2, Trophy, Swords, Zap, User, ShoppingBag, Coins, Video } from 'lucide-react';
 
-type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop';
+type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
 
 interface HeaderProps {
   currentView: View;
@@ -66,6 +66,18 @@ export function Header({ currentView, setCurrentView, onBackToProblems }: Header
               >
                 <Trophy className="w-4 h-4" />
                 Leaderboard
+              </button>
+
+              <button
+                onClick={() => handleNavClick('meeting')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  currentView === 'meeting'
+                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                }`}
+              >
+                <Video className="w-4 h-4" />
+                Meeting
               </button>
             </nav>
           </div>
