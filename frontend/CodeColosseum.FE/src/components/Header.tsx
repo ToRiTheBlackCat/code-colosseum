@@ -1,4 +1,5 @@
 import { Code2, Trophy, Swords, Zap, User, ShoppingBag, Coins, Video } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
 
@@ -6,9 +7,12 @@ interface HeaderProps {
   currentView: View;
   setCurrentView: (view: View) => void;
   onBackToProblems: () => void;
+  onSignOut?: () => void;
+  theme: 'light' | 'dark' | 'auto';
+  onThemeChange: (theme: 'light' | 'dark' | 'auto') => void;
 }
 
-export function Header({ currentView, setCurrentView, onBackToProblems }: HeaderProps) {
+export function Header({ currentView, setCurrentView, onBackToProblems, onSignOut, theme, onThemeChange }: HeaderProps) {
   const handleNavClick = (view: View) => {
     if (view === 'problems') {
       onBackToProblems();
@@ -18,7 +22,7 @@ export function Header({ currentView, setCurrentView, onBackToProblems }: Header
   };
 
   return (
-    <header className="border-b border-gray-800 bg-[#121212] sticky top-0 z-50">
+    <header className="border-b border-gray-800 dark:border-gray-800 light:border-gray-200 bg-[#121212] dark:bg-[#121212] light:bg-white sticky top-0 z-50">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between max-w-[1800px] mx-auto">
           <div className="flex items-center gap-8">
@@ -27,7 +31,7 @@ export function Header({ currentView, setCurrentView, onBackToProblems }: Header
                 <Zap className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                CodeBattle
+                CodeColosseum
               </span>
             </div>
             
@@ -104,6 +108,8 @@ export function Header({ currentView, setCurrentView, onBackToProblems }: Header
             >
               <span className="text-sm">JD</span>
             </button>
+            
+            <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
           </div>
         </div>
       </div>

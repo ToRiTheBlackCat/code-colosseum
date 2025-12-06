@@ -1,17 +1,29 @@
 import { useState } from 'react';
-import { Calendar, Flame, Award, TrendingUp, Code2, Target, Clock, CheckCircle2, Zap, Crown, Star, Gift, Trophy, Medal } from 'lucide-react';
+import { Calendar, Flame, Award, TrendingUp, Code2, Target, Clock, CheckCircle2, Zap, Crown, Star, Gift, Trophy, Medal, Settings, LogOut } from 'lucide-react';
 import { ActivityHeatmap } from './ActivityHeatmap';
 import { SkillsRadar } from './SkillsRadar';
 import { BadgesDisplay } from './BadgesDisplay';
 import { DailyCheckIn } from './DailyCheckIn';
 import { RecentSubmissions } from './RecentSubmissions';
+import { EditProfile } from './EditProfile';
 
-export function UserProfile() {
+interface UserProfileProps {
+  onSignOut?: () => void;
+}
+
+export function UserProfile({ onSignOut }: UserProfileProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'submissions' | 'badges'>('overview');
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
-  const userStats = {
+  const [userData, setUserData] = useState({
     username: 'JohnDoe',
     displayName: 'John Doe',
+    email: 'johndoe@example.com',
+    avatar: '',
+    bio: 'Passionate software engineer | Competitive programmer | Love solving algorithmic challenges',
+  });
+
+  const userStats = {
     rank: 127,
     totalSolved: 245,
     totalProblems: 1250,
@@ -34,16 +46,31 @@ export function UserProfile() {
     { date: '2025-11-24', count: 7 },
   ];
 
+  const handleSaveProfile = (updatedData: any) => {
+    setUserData(prev => ({
+      ...prev,
+      ...updatedData,
+    }));
+    setShowEditProfile(false);
+    // Show success message (you can add a toast notification here)
+    alert('Profile updated successfully!');
+  };
+
   return (
     <div className="max-w-[1600px] mx-auto px-6 py-8">
       {/* Profile Header */}
       <div className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-8 mb-8">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-6">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl">
-                JD
-              </div>
+              {userData.avatar ? (
+                <img src={userData.avatar} alt="Profile" className="w-24 h-24 rounded-full object-cover border-4 border-purple-500/30" />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl">
+                  {userData.displayName[0]?.toUpperCase() || 'J'}
+                  {userData.displayName.split(' ')[1]?.[0]?.toUpperCase() || 'D'}
+                </div>
+              )}
               <div className="absolute -bottom-2 -right-2 bg-yellow-400 rounded-full p-2">
                 <Crown className="w-5 h-5 text-gray-900" />
               </div>
@@ -51,11 +78,12 @@ export function UserProfile() {
             
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl">{userStats.displayName}</h1>
+                <h1 className="text-3xl">{userData.displayName}</h1>
                 <span className="px-3 py-1 bg-purple-500/20 border border-purple-500/30 rounded-lg text-sm text-purple-300">
-                  @{userStats.username}
+                  @{userData.username}
                 </span>
               </div>
+              <p className="text-gray-400 mb-3 max-w-2xl">{userData.bio}</p>
               <div className="flex items-center gap-4 text-gray-400">
                 <div className="flex items-center gap-2">
                   <Trophy className="w-4 h-4 text-yellow-400" />
@@ -73,8 +101,25 @@ export function UserProfile() {
             </div>
           </div>
 
-          <DailyCheckIn streak={userStats.currentStreak} />
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => setShowEditProfile(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Edit Profile</span>
+            </button>
+            <button
+              onClick={onSignOut}
+              className="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 rounded-lg transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Sign Out</span>
+            </button>
+          </div>
         </div>
+
+        <DailyCheckIn streak={userStats.currentStreak} />
       </div>
 
       {/* Quick Stats Grid */}
@@ -295,6 +340,15 @@ export function UserProfile() {
       {activeTab === 'submissions' && <RecentSubmissions />}
       
       {activeTab === 'badges' && <BadgesDisplay />}
+
+      {/* Edit Profile Modal */}
+      {showEditProfile && (
+        <EditProfile
+          currentUser={userData}
+          onSave={handleSaveProfile}
+          onClose={() => setShowEditProfile(false)}
+        />
+      )}
     </div>
   );
 }
