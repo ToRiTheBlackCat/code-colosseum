@@ -1,4 +1,4 @@
-import { Code2, Trophy, Swords, Zap, User, ShoppingBag, Coins, Video } from 'lucide-react';
+import { Code2, Trophy, Swords, Zap, User, ShoppingBag, Coins, Video, Gem, Crown } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
@@ -10,9 +10,10 @@ interface HeaderProps {
   onSignOut?: () => void;
   theme: 'light' | 'dark' | 'auto';
   onThemeChange: (theme: 'light' | 'dark' | 'auto') => void;
+  isPremium?: boolean;
 }
 
-export function Header({ currentView, setCurrentView, onBackToProblems, onSignOut, theme, onThemeChange }: HeaderProps) {
+export function Header({ currentView, setCurrentView, onBackToProblems, onSignOut, theme, onThemeChange, isPremium }: HeaderProps) {
   const handleNavClick = (view: View) => {
     if (view === 'problems') {
       onBackToProblems();
@@ -94,6 +95,21 @@ export function Header({ currentView, setCurrentView, onBackToProblems, onSignOu
               <Coins className="w-4 h-4 text-yellow-400" />
               <span className="text-sm text-yellow-400">3,420</span>
             </button>
+
+            <button
+              onClick={() => handleNavClick('shop')}
+              className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-lg hover:border-pink-500/50 transition-all"
+            >
+              <Gem className="w-4 h-4 text-pink-400" />
+              <span className="text-sm text-pink-400">1000</span>
+            </button>
+            
+            {isPremium && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-lg">
+                <Crown className="w-4 h-4 text-yellow-400" />
+                <span className="text-sm text-yellow-400">Premium</span>
+              </div>
+            )}
             
             <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />

@@ -27,6 +27,7 @@ export default function App() {
   });
   const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('dark');
   const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('dark');
+  const [isPremium, setIsPremium] = useState(true);
 
   // Handle auto theme based on time
   useEffect(() => {
@@ -114,6 +115,7 @@ export default function App() {
         onSignOut={handleSignOut}
         theme={theme}
         onThemeChange={setTheme}
+        isPremium={isPremium}
       />
       
       <main className="relative">
@@ -146,6 +148,7 @@ export default function App() {
             meetingCode={meetingState.meetingCode}
             isHost={meetingState.isHost}
             onLeave={handleLeaveMeeting}
+            isPremium={isPremium}
           />
         )}
       </main>

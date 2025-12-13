@@ -6,6 +6,8 @@ import { BadgesDisplay } from './BadgesDisplay';
 import { DailyCheckIn } from './DailyCheckIn';
 import { RecentSubmissions } from './RecentSubmissions';
 import { EditProfile } from './EditProfile';
+import { PetDisplay } from './PetDisplay';
+import type { Pet } from "./PetSystem";
 
 interface UserProfileProps {
   onSignOut?: () => void;
@@ -21,6 +23,22 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
     email: 'johndoe@example.com',
     avatar: '',
     bio: 'Passionate software engineer | Competitive programmer | Love solving algorithmic challenges',
+  });
+
+  // Demo pet data - in production, this would come from user's actual pet
+  const [userPet] = useState<Pet | null>({
+    id: 'demo-pet',
+    type: 'dragon',
+    name: 'Code Dragon',
+    stage: 'child',
+    level: 5,
+    experience: 350,
+    hunger: 75,
+    happiness: 85,
+    bondLevel: 60,
+    acquiredDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    lastFed: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    evolutionProgress: 70,
   });
 
   const userStats = {
@@ -278,6 +296,13 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
           </div>
 
           <div className="space-y-8">
+            {/* Pet Companion */}
+            {userPet && (
+              <div className="mb-8">
+                <PetDisplay pet={userPet} compact={true} />
+              </div>
+            )}
+
             {/* Featured Badges */}
             <div className="bg-[#121212] border border-gray-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">

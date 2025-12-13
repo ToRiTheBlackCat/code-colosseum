@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Mic, MicOff, Video, VideoOff, Monitor, MessageSquare, Users, Phone, Code2, PenTool, Send, Copy, Check } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff, Monitor, MessageSquare, Users, Phone, Code2, PenTool, Send, Copy, Check, Bot, Crown, Sparkles } from 'lucide-react';
 import { CollaborativeCodeEditor } from './CollaborativeCodeEditor';
 import { CollaborativeWhiteboard } from './CollaborativeWhiteboard';
+import { AIAgentConfig} from './AIAgentConfig';
+import { AIInterviewer } from './AIInterviewer';
+import type { AIAgentSettings } from "./AIAgentConfig";
 
 interface Participant {
   id: string;
@@ -17,6 +20,7 @@ interface MeetingRoomProps {
   meetingCode: string;
   isHost: boolean;
   onLeave: () => void;
+  isPremium?: boolean;
 }
 
 interface ChatMessage {
@@ -27,7 +31,7 @@ interface ChatMessage {
   timestamp: string;
 }
 
-export function MeetingRoom({ meetingCode, isHost, onLeave }: MeetingRoomProps) {
+export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: MeetingRoomProps) {
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
   const [activeView, setActiveView] = useState<'code' | 'whiteboard'>('code');
@@ -37,6 +41,12 @@ export function MeetingRoom({ meetingCode, isHost, onLeave }: MeetingRoomProps) 
     { id: '1', userId: 'system', username: 'System', message: 'Meeting started', timestamp: '10:30 AM' },
   ]);
   const [copied, setCopied] = useState(false);
+  
+  // AI Agent states
+  const [showAIConfig, setShowAIConfig] = useState(false);
+  const [aiAgentActive, setAiAgentActive] = useState(false);
+  const [aiAgentSettings, setAiAgentSettings] = useState<AIAgentSettings | null>(null);
+  const [showAIPanel, setShowAIPanel] = useState(false);
 
   const [participants, setParticipants] = useState<Participant[]>([
     {
@@ -101,6 +111,64 @@ export function MeetingRoom({ meetingCode, isHost, onLeave }: MeetingRoomProps) 
     navigator.clipboard.writeText(meetingCode);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleActivateAIAgent = () => {
+    if (!isPremium) {
+      alert('AI Interview Agent is a premium feature. Upgrade to Premium to unlock this feature!');
+      return;
+    }
+    setShowAIConfig(true);
+  };
+
+  const handleSaveAIConfig = (settings: AIAgentSettings) => {
+    setAiAgentSettings(settings);
+    setShowAIConfig(false);
+    setAiAgentActive(true);
+    setShowAIPanel(true);
+
+    // Add AI Agent to participants
+    setParticipants(prev => [
+      ...prev,
+      {
+        id: 'ai-agent',
+        username: `${settings.name} (AI Agent)`,
+        avatar: '🤖',
+        color: '#3b82f6',
+        isMuted: false,
+        isVideoOff: false,
+        isHost: false,
+      },
+    ]);
+
+    // Add system message
+    setChatMessages(prev => [
+      ...prev,
+      {
+        id: String(prev.length + 1),
+        userId: 'system',
+        username: 'System',
+        message: `AI Agent "${settings.name}" has joined the meeting`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+  };
+
+  const handleCloseAIAgent = () => {
+    setAiAgentActive(false);
+    setShowAIPanel(false);
+    setParticipants(prev => prev.filter(p => p.id !== 'ai-agent'));
+    
+    setChatMessages(prev => [
+      ...prev,
+      {
+        id: String(prev.length + 1),
+        userId: 'system',
+        username: 'System',
+        message: `AI Agent "${aiAgentSettings?.name}" has left the meeting`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
   };
 
   return (
@@ -203,6 +271,34 @@ export function MeetingRoom({ meetingCode, isHost, onLeave }: MeetingRoomProps) 
 
           {/* Controls */}
           <div className="p-4 border-t border-gray-800 bg-[#0a0a0a]">
+            {/* AI Agent Button */}
+            {!aiAgentActive && (
+              <button
+                onClick={handleActivateAIAgent}
+                className={`w-full mb-3 py-2 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                  isPremium
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600'
+                    : 'bg-gray-800 border border-gray-700 hover:bg-gray-700'
+                }`}
+                title={isPremium ? 'Activate AI Interview Agent' : 'Premium Feature - Upgrade to unlock'}
+              >
+                <Bot className="w-4 h-4" />
+                <span className="text-sm">AI Interview Agent</span>
+                {isPremium && <Sparkles className="w-3 h-3" />}
+                {!isPremium && <Crown className="w-3 h-3 text-yellow-400" />}
+              </button>
+            )}
+            
+            {aiAgentActive && (
+              <button
+                onClick={() => setShowAIPanel(!showAIPanel)}
+                className="w-full mb-3 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-all flex items-center justify-center gap-2"
+              >
+                <Bot className="w-4 h-4" />
+                <span className="text-sm">{showAIPanel ? 'Hide' : 'Show'} AI Agent</span>
+              </button>
+            )}
+            
             <div className="flex items-center justify-center gap-3 mb-3">
               <button
                 onClick={() => setIsMuted(!isMuted)}
@@ -355,7 +451,26 @@ export function MeetingRoom({ meetingCode, isHost, onLeave }: MeetingRoomProps) 
             <MessageSquare className="w-6 h-6" />
           </button>
         )}
+        
+        {/* AI Agent Panel (Floating) */}
+        {showAIPanel && aiAgentSettings && (
+          <div className="absolute bottom-24 right-6 w-96 h-[600px] shadow-2xl z-50">
+            <AIInterviewer
+              settings={aiAgentSettings}
+              isActive={aiAgentActive}
+              onClose={handleCloseAIAgent}
+            />
+          </div>
+        )}
       </div>
+      
+      {/* AI Agent Configuration Modal */}
+      {showAIConfig && (
+        <AIAgentConfig
+          onSave={handleSaveAIConfig}
+          onCancel={() => setShowAIConfig(false)}
+        />
+      )}
     </div>
   );
 }
