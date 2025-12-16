@@ -57,7 +57,7 @@
 
 ### Prerequisites
 - Docker Desktop
-- .NET 8 SDK
+- .NET 9 SDK
 - Node.js 18+
 
 ### Installation
