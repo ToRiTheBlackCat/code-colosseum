@@ -16,6 +16,12 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CodeColosseum.Modules.Users\Modules.Users.Domain.csproj" />
+		<ProjectReference Include="..\CodeColosseum.Shared\CodeColosseum.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="UserFeatures\Commands\" />
+	  <Folder Include="UserFeatures\Queries\" />
 	</ItemGroup>
 
 </Project>

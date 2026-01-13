@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CodeColosseum.Shared.Application.Behaviors;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FluentValidation;
 
 namespace Modules.Users.Application
 {
@@ -15,7 +16,13 @@ namespace Modules.Users.Application
             var assembly = typeof(DependencyInjection).Assembly;
 
             services.AddMediatR(configuration =>
-                configuration.RegisterServicesFromAssembly(assembly));
+            {
+                configuration.RegisterServicesFromAssembly(assembly);
+
+                // Activate Pipeline Behavior
+                // Using for Validation
+                configuration.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
+            });
 
             services.AddValidatorsFromAssembly(assembly);
 
