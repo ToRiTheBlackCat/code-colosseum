@@ -21,7 +21,7 @@ namespace Modules.Users.Application.RoleFeatures.Commands.UpdateRole
 
         public async Task<Result<Guid>> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            // 1. Tìm Role theo ID
+            // Find existed role
             var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
 
             if (role == null)
@@ -32,7 +32,7 @@ namespace Modules.Users.Application.RoleFeatures.Commands.UpdateRole
                 );
             }
 
-            // 2. Nếu người dùng đổi tên Role -> Kiểm tra xem tên mới có bị trùng với người khác không
+            // Check duplicate Request.RoleName
             if (role.Name != request.RoleName)
             {
                 var existingRoleName = await _roleManager.FindByNameAsync(request.RoleName);
@@ -45,11 +45,10 @@ namespace Modules.Users.Application.RoleFeatures.Commands.UpdateRole
                 }
             }
 
-            // 3. Cập nhật thông tin
+            // Update data
             role.Name = request.RoleName;
             role.Description = request.Description;
 
-            // 4. Lưu xuống DB
             var result = await _roleManager.UpdateAsync(role);
 
             if (!result.Succeeded)
