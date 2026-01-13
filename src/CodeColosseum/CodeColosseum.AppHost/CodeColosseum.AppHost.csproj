@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeColosseum.API\CodeColosseum.WebAPI.csproj" />
+    <ProjectReference Include="..\CodeColosseum.API\CodeColosseum.API.csproj" />
   </ItemGroup>
 
 </Project>

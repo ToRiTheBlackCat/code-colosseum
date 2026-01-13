@@ -10,11 +10,18 @@
 		<PackageReference Include="MediatR" />
 		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CodeColosseum.Modules.Users\Modules.Users.Domain.csproj" />
+		<ProjectReference Include="..\CodeColosseum.Shared\CodeColosseum.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="UserFeatures\Commands\" />
+	  <Folder Include="UserFeatures\Queries\" />
 	</ItemGroup>
 
 </Project>
