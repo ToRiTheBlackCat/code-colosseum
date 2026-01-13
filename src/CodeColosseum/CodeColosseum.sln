@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeColosseum.WebAPI", "CodeColosseum.API\CodeColosseum.WebAPI.csproj", "{959BD3ED-CFDA-4B65-A833-4E61202CB807}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeColosseum.API", "CodeColosseum.API\CodeColosseum.API.csproj", "{959BD3ED-CFDA-4B65-A833-4E61202CB807}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
