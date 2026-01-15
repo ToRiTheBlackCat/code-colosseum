@@ -7,9 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MailKit" />
+		<PackageReference Include="MassTransit" />
+		<PackageReference Include="MassTransit.EntityFrameworkCore" />
 		<PackageReference Include="MediatR" />
-		<PackageReference Include="FluentValidation"  />
+		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.Options" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+		<PackageReference Include="MimeKit" />
 	</ItemGroup>
 
 </Project>

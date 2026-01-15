@@ -27,10 +27,13 @@ namespace Modules.Users.Infrastructure
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
+                //Configure UserName
+                options.User.AllowedUserNameCharacters = null;
             })
                 .AddRoles<AppRole>()                    
                 .AddEntityFrameworkStores<UsersDbContext>() // Connect to DB
                 .AddDefaultTokenProviders();
+
             return services;
         }
     }
