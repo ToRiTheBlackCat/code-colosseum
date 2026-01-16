@@ -1,10 +1,26 @@
-import { useState, useEffect } from 'react';
-import { Mic, MicOff, Video, VideoOff, Monitor, MessageSquare, Users, Phone, Code2, PenTool, Send, Copy, Check, Bot, Crown, Sparkles } from 'lucide-react';
-import { CollaborativeCodeEditor } from './CollaborativeCodeEditor';
-import { CollaborativeWhiteboard } from './CollaborativeWhiteboard';
-import { AIAgentConfig} from './AIAgentConfig';
-import { AIInterviewer } from './AIInterviewer';
-import type { AIAgentSettings } from "./AIAgentConfig";
+import { useState, useEffect } from "react";
+import {
+  Mic,
+  MicOff,
+  Video,
+  VideoOff,
+  Monitor,
+  MessageSquare,
+  Users,
+  Phone,
+  Code2,
+  PenTool,
+  Send,
+  Copy,
+  Check,
+  Bot,
+  Crown,
+  Sparkles,
+} from "lucide-react";
+import { CollaborativeCodeEditor } from "./CollaborativeCodeEditor";
+import { CollaborativeWhiteboard } from "./CollaborativeWhiteboard";
+import { AIAgentConfig, type AIAgentSettings } from "./AIAgentConfig";
+import { AIInterviewer } from "./AIInterviewer";
 
 interface Participant {
   id: string;
@@ -31,29 +47,41 @@ interface ChatMessage {
   timestamp: string;
 }
 
-export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: MeetingRoomProps) {
+export function MeetingRoom({
+  meetingCode,
+  isHost,
+  onLeave,
+  isPremium,
+}: MeetingRoomProps) {
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
-  const [activeView, setActiveView] = useState<'code' | 'whiteboard'>('code');
+  const [activeView, setActiveView] = useState<"code" | "whiteboard">("code");
   const [showChat, setShowChat] = useState(true);
-  const [chatMessage, setChatMessage] = useState('');
+  const [chatMessage, setChatMessage] = useState("");
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { id: '1', userId: 'system', username: 'System', message: 'Meeting started', timestamp: '10:30 AM' },
+    {
+      id: "1",
+      userId: "system",
+      username: "System",
+      message: "Meeting started",
+      timestamp: "10:30 AM",
+    },
   ]);
   const [copied, setCopied] = useState(false);
-  
+
   // AI Agent states
   const [showAIConfig, setShowAIConfig] = useState(false);
   const [aiAgentActive, setAiAgentActive] = useState(false);
-  const [aiAgentSettings, setAiAgentSettings] = useState<AIAgentSettings | null>(null);
+  const [aiAgentSettings, setAiAgentSettings] =
+    useState<AIAgentSettings | null>(null);
   const [showAIPanel, setShowAIPanel] = useState(false);
 
   const [participants, setParticipants] = useState<Participant[]>([
     {
-      id: 'me',
-      username: 'You (Host)',
-      avatar: 'YH',
-      color: '#8b5cf6',
+      id: "me",
+      username: "You (Host)",
+      avatar: "YH",
+      color: "#8b5cf6",
       isMuted: false,
       isVideoOff: false,
       isHost: true,
@@ -63,27 +91,31 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
   // Simulate participants joining
   useEffect(() => {
     const timer = setTimeout(() => {
-      setParticipants(prev => [
+      setParticipants((prev) => [
         ...prev,
         {
-          id: 'interviewer',
-          username: 'Jane Smith (Interviewer)',
-          avatar: 'JS',
-          color: '#ec4899',
+          id: "interviewer",
+          username: "Jane Smith (Interviewer)",
+          avatar: "JS",
+          color: "#ec4899",
           isMuted: false,
           isVideoOff: false,
           isHost: false,
         },
       ]);
 
-      setChatMessages(prev => [
+      setChatMessages((prev) => [
         ...prev,
         {
           id: String(prev.length + 1),
-          userId: 'interviewer',
-          username: 'Jane Smith',
-          message: 'Hi! Thanks for joining. Let\'s start with a coding question.',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          userId: "interviewer",
+          username: "Jane Smith",
+          message:
+            "Hi! Thanks for joining. Let's start with a coding question.",
+          timestamp: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
         },
       ]);
     }, 3000);
@@ -93,17 +125,20 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
 
   const handleSendMessage = () => {
     if (chatMessage.trim()) {
-      setChatMessages(prev => [
+      setChatMessages((prev) => [
         ...prev,
         {
           id: String(prev.length + 1),
-          userId: 'me',
-          username: 'You',
+          userId: "me",
+          username: "You",
           message: chatMessage,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timestamp: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
         },
       ]);
-      setChatMessage('');
+      setChatMessage("");
     }
   };
 
@@ -115,7 +150,9 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
 
   const handleActivateAIAgent = () => {
     if (!isPremium) {
-      alert('AI Interview Agent is a premium feature. Upgrade to Premium to unlock this feature!');
+      alert(
+        "AI Interview Agent is a premium feature. Upgrade to Premium to unlock this feature!"
+      );
       return;
     }
     setShowAIConfig(true);
@@ -128,13 +165,13 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
     setShowAIPanel(true);
 
     // Add AI Agent to participants
-    setParticipants(prev => [
+    setParticipants((prev) => [
       ...prev,
       {
-        id: 'ai-agent',
+        id: "ai-agent",
         username: `${settings.name} (AI Agent)`,
-        avatar: '🤖',
-        color: '#3b82f6',
+        avatar: "🤖",
+        color: "#3b82f6",
         isMuted: false,
         isVideoOff: false,
         isHost: false,
@@ -142,14 +179,17 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
     ]);
 
     // Add system message
-    setChatMessages(prev => [
+    setChatMessages((prev) => [
       ...prev,
       {
         id: String(prev.length + 1),
-        userId: 'system',
-        username: 'System',
+        userId: "system",
+        username: "System",
         message: `AI Agent "${settings.name}" has joined the meeting`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       },
     ]);
   };
@@ -157,16 +197,19 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
   const handleCloseAIAgent = () => {
     setAiAgentActive(false);
     setShowAIPanel(false);
-    setParticipants(prev => prev.filter(p => p.id !== 'ai-agent'));
-    
-    setChatMessages(prev => [
+    setParticipants((prev) => prev.filter((p) => p.id !== "ai-agent"));
+
+    setChatMessages((prev) => [
       ...prev,
       {
         id: String(prev.length + 1),
-        userId: 'system',
-        username: 'System',
+        userId: "system",
+        username: "System",
         message: `AI Agent "${aiAgentSettings?.name}" has left the meeting`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       },
     ]);
   };
@@ -277,10 +320,14 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
                 onClick={handleActivateAIAgent}
                 className={`w-full mb-3 py-2 rounded-lg transition-all flex items-center justify-center gap-2 ${
                   isPremium
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600'
-                    : 'bg-gray-800 border border-gray-700 hover:bg-gray-700'
+                    ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                    : "bg-gray-800 border border-gray-700 hover:bg-gray-700"
                 }`}
-                title={isPremium ? 'Activate AI Interview Agent' : 'Premium Feature - Upgrade to unlock'}
+                title={
+                  isPremium
+                    ? "Activate AI Interview Agent"
+                    : "Premium Feature - Upgrade to unlock"
+                }
               >
                 <Bot className="w-4 h-4" />
                 <span className="text-sm">AI Interview Agent</span>
@@ -288,36 +335,50 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
                 {!isPremium && <Crown className="w-3 h-3 text-yellow-400" />}
               </button>
             )}
-            
+
             {aiAgentActive && (
               <button
                 onClick={() => setShowAIPanel(!showAIPanel)}
                 className="w-full mb-3 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-all flex items-center justify-center gap-2"
               >
                 <Bot className="w-4 h-4" />
-                <span className="text-sm">{showAIPanel ? 'Hide' : 'Show'} AI Agent</span>
+                <span className="text-sm">
+                  {showAIPanel ? "Hide" : "Show"} AI Agent
+                </span>
               </button>
             )}
-            
+
             <div className="flex items-center justify-center gap-3 mb-3">
               <button
                 onClick={() => setIsMuted(!isMuted)}
                 className={`p-4 rounded-full transition-all ${
-                  isMuted ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-700 hover:bg-gray-600'
+                  isMuted
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-gray-700 hover:bg-gray-600"
                 }`}
-                title={isMuted ? 'Unmute' : 'Mute'}
+                title={isMuted ? "Unmute" : "Mute"}
               >
-                {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                {isMuted ? (
+                  <MicOff className="w-5 h-5" />
+                ) : (
+                  <Mic className="w-5 h-5" />
+                )}
               </button>
-              
+
               <button
                 onClick={() => setIsVideoOff(!isVideoOff)}
                 className={`p-4 rounded-full transition-all ${
-                  isVideoOff ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-700 hover:bg-gray-600'
+                  isVideoOff
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-gray-700 hover:bg-gray-600"
                 }`}
-                title={isVideoOff ? 'Turn on camera' : 'Turn off camera'}
+                title={isVideoOff ? "Turn on camera" : "Turn off camera"}
               >
-                {isVideoOff ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
+                {isVideoOff ? (
+                  <VideoOff className="w-5 h-5" />
+                ) : (
+                  <Video className="w-5 h-5" />
+                )}
               </button>
 
               <button
@@ -343,18 +404,22 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
           {/* View Switcher */}
           <div className="bg-[#121212] border-b border-gray-800 px-6 py-3 flex items-center gap-2">
             <button
-              onClick={() => setActiveView('code')}
+              onClick={() => setActiveView("code")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                activeView === 'code' ? 'bg-purple-500 text-white' : 'bg-gray-800 hover:bg-gray-700'
+                activeView === "code"
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-800 hover:bg-gray-700"
               }`}
             >
               <Code2 className="w-5 h-5" />
               <span>Code Editor</span>
             </button>
             <button
-              onClick={() => setActiveView('whiteboard')}
+              onClick={() => setActiveView("whiteboard")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                activeView === 'whiteboard' ? 'bg-purple-500 text-white' : 'bg-gray-800 hover:bg-gray-700'
+                activeView === "whiteboard"
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-800 hover:bg-gray-700"
               }`}
             >
               <PenTool className="w-5 h-5" />
@@ -364,8 +429,11 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
 
           {/* Content */}
           <div className="flex-1 overflow-hidden">
-            {activeView === 'code' ? (
-              <CollaborativeCodeEditor isHost={isHost} participants={participants} />
+            {activeView === "code" ? (
+              <CollaborativeCodeEditor
+                isHost={isHost}
+                participants={participants}
+              />
             ) : (
               <CollaborativeWhiteboard participants={participants} />
             )}
@@ -393,31 +461,41 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
                 <div
                   key={msg.id}
                   className={`${
-                    msg.userId === 'system'
-                      ? 'text-center text-xs text-gray-500'
-                      : msg.userId === 'me'
-                      ? 'ml-8'
-                      : 'mr-8'
+                    msg.userId === "system"
+                      ? "text-center text-xs text-gray-500"
+                      : msg.userId === "me"
+                      ? "ml-8"
+                      : "mr-8"
                   }`}
                 >
-                  {msg.userId !== 'system' && (
+                  {msg.userId !== "system" && (
                     <div className="mb-1">
-                      <span className={`text-sm ${msg.userId === 'me' ? 'text-purple-400' : 'text-pink-400'}`}>
+                      <span
+                        className={`text-sm ${
+                          msg.userId === "me"
+                            ? "text-purple-400"
+                            : "text-pink-400"
+                        }`}
+                      >
                         {msg.username}
                       </span>
-                      <span className="text-xs text-gray-500 ml-2">{msg.timestamp}</span>
+                      <span className="text-xs text-gray-500 ml-2">
+                        {msg.timestamp}
+                      </span>
                     </div>
                   )}
-                  {msg.userId !== 'system' && (
-                    <div className={`p-3 rounded-lg ${
-                      msg.userId === 'me'
-                        ? 'bg-purple-500/20 border border-purple-500/30'
-                        : 'bg-gray-800'
-                    }`}>
+                  {msg.userId !== "system" && (
+                    <div
+                      className={`p-3 rounded-lg ${
+                        msg.userId === "me"
+                          ? "bg-purple-500/20 border border-purple-500/30"
+                          : "bg-gray-800"
+                      }`}
+                    >
                       {msg.message}
                     </div>
                   )}
-                  {msg.userId === 'system' && msg.message}
+                  {msg.userId === "system" && msg.message}
                 </div>
               ))}
             </div>
@@ -428,7 +506,7 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
                   type="text"
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                   placeholder="Type a message..."
                   className="flex-1 px-3 py-2 bg-[#0a0a0a] border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 transition-all"
                 />
@@ -451,7 +529,7 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
             <MessageSquare className="w-6 h-6" />
           </button>
         )}
-        
+
         {/* AI Agent Panel (Floating) */}
         {showAIPanel && aiAgentSettings && (
           <div className="absolute bottom-24 right-6 w-96 h-[600px] shadow-2xl z-50">
@@ -463,7 +541,7 @@ export function MeetingRoom({ meetingCode, isHost, onLeave, isPremium }: Meeting
           </div>
         )}
       </div>
-      
+
       {/* AI Agent Configuration Modal */}
       {showAIConfig && (
         <AIAgentConfig

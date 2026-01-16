@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { Video, Copy, Check, Users, Code2 } from 'lucide-react';
+import { useState } from "react";
+import { Video, Copy, Check, Users, Code2 } from "lucide-react";
 
 interface MeetingLobbyProps {
   onJoinMeeting: (meetingCode: string, isHost: boolean) => void;
 }
 
 export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
-  const [mode, setMode] = useState<'choose' | 'create' | 'join'>('choose');
-  const [meetingCode, setMeetingCode] = useState('');
-  const [generatedCode, setGeneratedCode] = useState('');
+  const [mode, setMode] = useState<"choose" | "create" | "join">("choose");
+  const [meetingCode, setMeetingCode] = useState("");
+  const [generatedCode, setGeneratedCode] = useState("");
   const [copied, setCopied] = useState(false);
 
   const generateMeetingCode = () => {
     const code = Math.random().toString(36).substring(2, 10).toUpperCase();
     setGeneratedCode(code);
-    setMode('create');
+    setMode("create");
   };
 
   const handleCopyCode = () => {
@@ -36,7 +36,7 @@ export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
   return (
     <div className="min-h-[calc(100vh-73px)] bg-[#0a0a0a] flex items-center justify-center px-6">
       <div className="max-w-2xl w-full">
-        {mode === 'choose' && (
+        {mode === "choose" && (
           <div className="text-center">
             <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
               <Video className="w-12 h-12 text-white" />
@@ -61,7 +61,7 @@ export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
 
               {/* Join Meeting */}
               <div
-                onClick={() => setMode('join')}
+                onClick={() => setMode("join")}
                 className="bg-[#121212] border-2 border-gray-800 rounded-2xl p-8 hover:border-purple-500/50 transition-all cursor-pointer group"
               >
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -89,13 +89,15 @@ export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
           </div>
         )}
 
-        {mode === 'create' && (
+        {mode === "create" && (
           <div className="bg-[#121212] border border-gray-800 rounded-2xl p-8">
             <h2 className="text-3xl mb-6 text-center">Meeting Created!</h2>
-            
+
             <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-8 mb-6">
               <div className="text-center">
-                <div className="text-sm text-gray-400 mb-2">Your Meeting Code</div>
+                <div className="text-sm text-gray-400 mb-2">
+                  Your Meeting Code
+                </div>
                 <div className="text-4xl tracking-wider mb-4 font-mono bg-[#0a0a0a] py-4 px-6 rounded-lg border border-purple-500/50">
                   {generatedCode}
                 </div>
@@ -126,7 +128,7 @@ export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setMode('choose')}
+                onClick={() => setMode("choose")}
                 className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all"
               >
                 Back
@@ -141,12 +143,14 @@ export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
           </div>
         )}
 
-        {mode === 'join' && (
+        {mode === "join" && (
           <div className="bg-[#121212] border border-gray-800 rounded-2xl p-8">
             <h2 className="text-3xl mb-6 text-center">Join Meeting</h2>
-            
+
             <div className="mb-6">
-              <label className="block text-sm text-gray-400 mb-2">Meeting Code</label>
+              <label className="block text-sm text-gray-400 mb-2">
+                Meeting Code
+              </label>
               <input
                 type="text"
                 value={meetingCode}
@@ -159,7 +163,7 @@ export function MeetingLobby({ onJoinMeeting }: MeetingLobbyProps) {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setMode('choose')}
+                onClick={() => setMode("choose")}
                 className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all"
               >
                 Back

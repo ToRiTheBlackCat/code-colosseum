@@ -1,5 +1,13 @@
-import { useState } from 'react';
-import { X, Gem, CreditCard, DollarSign, Check, Loader2, AlertCircle } from 'lucide-react';
+import { useState } from "react";
+import {
+  X,
+  Gem,
+  CreditCard,
+  DollarSign,
+  Check,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
 
 interface GemPackage {
   id: number;
@@ -15,8 +23,8 @@ const gemPackages: GemPackage[] = [
   { id: 2, gems: 500, price: 4.99, bonus: 50 },
   { id: 3, gems: 1200, price: 9.99, bonus: 200, popular: true },
   { id: 4, gems: 2500, price: 19.99, bonus: 500 },
-  { id: 5, gems: 6000, price: 49.99, bonus: 1500, badge: 'Best Value' },
-  { id: 6, gems: 12500, price: 99.99, bonus: 3500, badge: 'Ultimate' },
+  { id: 5, gems: 6000, price: 49.99, bonus: 1500, badge: "Best Value" },
+  { id: 6, gems: 12500, price: 99.99, bonus: 3500, badge: "Ultimate" },
 ];
 
 interface PaymentMethod {
@@ -27,10 +35,10 @@ interface PaymentMethod {
 }
 
 const paymentMethods: PaymentMethod[] = [
-  { id: 'paypal', name: 'PayPal', logo: '💳', enabled: true },
-  { id: 'visa', name: 'Credit/Debit Card', logo: '💳', enabled: true },
-  { id: 'payos', name: 'PayOS', logo: '💰', enabled: true },
-  { id: 'zalopay', name: 'ZaloPay', logo: '⚡', enabled: true },
+  { id: "paypal", name: "PayPal", logo: "💳", enabled: true },
+  { id: "visa", name: "Credit/Debit Card", logo: "💳", enabled: true },
+  { id: "payos", name: "PayOS", logo: "💰", enabled: true },
+  { id: "zalopay", name: "ZaloPay", logo: "⚡", enabled: true },
 ];
 
 interface GemPurchaseProps {
@@ -39,7 +47,9 @@ interface GemPurchaseProps {
 }
 
 export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
-  const [selectedPackage, setSelectedPackage] = useState<GemPackage | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<GemPackage | null>(
+    null
+  );
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
@@ -48,21 +58,21 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
     if (!selectedPackage || !selectedPayment) return;
 
     setProcessing(true);
-    
+
     // Simulate payment processing
     // In production, integrate with actual payment gateways:
     // - PayPal SDK: https://developer.paypal.com/
     // - Stripe for cards: https://stripe.com/docs
     // - PayOS API: https://payos.vn/docs
     // - ZaloPay SDK: https://docs.zalopay.vn/
-    
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     setProcessing(false);
     setPurchaseSuccess(true);
-    
+
     const totalGems = selectedPackage.gems + (selectedPackage.bonus || 0);
-    
+
     setTimeout(() => {
       onPurchaseComplete(totalGems);
       onClose();
@@ -80,10 +90,15 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
             </div>
             <div>
               <h2 className="text-2xl">Purchase Gems</h2>
-              <p className="text-sm text-gray-400">Get premium currency to unlock exclusive items</p>
+              <p className="text-sm text-gray-400">
+                Get premium currency to unlock exclusive items
+              </p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -97,16 +112,16 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                 {gemPackages.map((pkg) => {
                   const totalGems = pkg.gems + (pkg.bonus || 0);
                   const isSelected = selectedPackage?.id === pkg.id;
-                  
+
                   return (
                     <button
                       key={pkg.id}
                       onClick={() => setSelectedPackage(pkg)}
                       className={`relative p-6 rounded-xl border-2 transition-all text-left ${
                         isSelected
-                          ? 'border-pink-500 bg-pink-500/10'
-                          : 'border-gray-800 hover:border-gray-700 bg-[#121212]'
-                      } ${pkg.popular ? 'ring-2 ring-purple-500/50' : ''}`}
+                          ? "border-pink-500 bg-pink-500/10"
+                          : "border-gray-800 hover:border-gray-700 bg-[#121212]"
+                      } ${pkg.popular ? "ring-2 ring-purple-500/50" : ""}`}
                     >
                       {pkg.badge && (
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs rounded-full">
@@ -118,14 +133,18 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                           Most Popular
                         </div>
                       )}
-                      
+
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                           <Gem className="w-8 h-8 text-pink-400" />
                           <div>
-                            <div className="text-2xl text-pink-400">{pkg.gems}</div>
+                            <div className="text-2xl text-pink-400">
+                              {pkg.gems}
+                            </div>
                             {pkg.bonus && (
-                              <div className="text-xs text-green-400">+{pkg.bonus} Bonus</div>
+                              <div className="text-xs text-green-400">
+                                +{pkg.bonus} Bonus
+                              </div>
                             )}
                           </div>
                         </div>
@@ -135,14 +154,15 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="text-sm text-gray-400 mb-2">
                         Total: {totalGems} gems
                       </div>
                       <div className="text-2xl">${pkg.price.toFixed(2)}</div>
                       {pkg.bonus && (
                         <div className="text-xs text-purple-400 mt-1">
-                          {Math.round((pkg.bonus / pkg.gems) * 100)}% extra value
+                          {Math.round((pkg.bonus / pkg.gems) * 100)}% extra
+                          value
                         </div>
                       )}
                     </button>
@@ -158,7 +178,7 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {paymentMethods.map((method) => {
                     const isSelected = selectedPayment === method.id;
-                    
+
                     return (
                       <button
                         key={method.id}
@@ -166,9 +186,11 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                         disabled={!method.enabled}
                         className={`p-4 rounded-xl border-2 transition-all flex items-center justify-between ${
                           isSelected
-                            ? 'border-pink-500 bg-pink-500/10'
-                            : 'border-gray-800 hover:border-gray-700 bg-[#121212]'
-                        } ${!method.enabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            ? "border-pink-500 bg-pink-500/10"
+                            : "border-gray-800 hover:border-gray-700 bg-[#121212]"
+                        } ${
+                          !method.enabled ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                       >
                         <div className="flex items-center gap-3">
                           <div className="text-3xl">{method.logo}</div>
@@ -190,7 +212,8 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                   <div className="text-sm text-gray-300">
                     <div className="mb-1">Secure Payment</div>
                     <div className="text-gray-400">
-                      All transactions are encrypted and secure. We never store your payment information.
+                      All transactions are encrypted and secure. We never store
+                      your payment information.
                     </div>
                   </div>
                 </div>
@@ -203,7 +226,9 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <div className="text-sm text-gray-400">Total Amount</div>
-                    <div className="text-3xl">${selectedPackage.price.toFixed(2)}</div>
+                    <div className="text-3xl">
+                      ${selectedPackage.price.toFixed(2)}
+                    </div>
                   </div>
                   <div className="text-right">
                     <div className="text-sm text-gray-400">You'll Receive</div>
@@ -213,7 +238,7 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                     </div>
                   </div>
                 </div>
-                
+
                 <button
                   onClick={handlePurchase}
                   disabled={processing}
@@ -233,7 +258,8 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
                 </button>
 
                 <p className="text-xs text-gray-500 text-center mt-3">
-                  By purchasing, you agree to our Terms of Service and Privacy Policy
+                  By purchasing, you agree to our Terms of Service and Privacy
+                  Policy
                 </p>
               </div>
             )}
@@ -245,11 +271,17 @@ export function GemPurchase({ onClose, onPurchaseComplete }: GemPurchaseProps) {
             </div>
             <h3 className="text-2xl mb-2">Purchase Successful!</h3>
             <p className="text-gray-400 mb-6">
-              {selectedPackage && `${selectedPackage.gems + (selectedPackage.bonus || 0)} gems have been added to your account`}
+              {selectedPackage &&
+                `${
+                  selectedPackage.gems + (selectedPackage.bonus || 0)
+                } gems have been added to your account`}
             </p>
             <div className="flex items-center justify-center gap-2 text-pink-400">
               <Gem className="w-6 h-6" />
-              <span className="text-3xl">{selectedPackage && selectedPackage.gems + (selectedPackage.bonus || 0)}</span>
+              <span className="text-3xl">
+                {selectedPackage &&
+                  selectedPackage.gems + (selectedPackage.bonus || 0)}
+              </span>
             </div>
           </div>
         )}

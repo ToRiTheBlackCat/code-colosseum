@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Sparkles, Heart, Star } from "lucide-react";
-import { petTemplates } from "./PetSystem";
-import type { Pet } from "./PetSystem";
+import { type Pet, petTemplates } from "./PetSystem";
 
 interface AnimatedPetProps {
   pet: Pet;

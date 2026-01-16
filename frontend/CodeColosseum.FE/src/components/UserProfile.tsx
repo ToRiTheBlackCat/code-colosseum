@@ -1,36 +1,55 @@
-import { useState } from 'react';
-import { Calendar, Flame, Award, TrendingUp, Code2, Target, Clock, CheckCircle2, Zap, Crown, Star, Gift, Trophy, Medal, Settings, LogOut } from 'lucide-react';
-import { ActivityHeatmap } from './ActivityHeatmap';
-import { SkillsRadar } from './SkillsRadar';
-import { BadgesDisplay } from './BadgesDisplay';
-import { DailyCheckIn } from './DailyCheckIn';
-import { RecentSubmissions } from './RecentSubmissions';
-import { EditProfile } from './EditProfile';
-import { PetDisplay } from './PetDisplay';
-import type { Pet } from "./PetSystem";
+import { useState } from "react";
+import {
+  Calendar,
+  Flame,
+  Award,
+  TrendingUp,
+  Code2,
+  Target,
+  Clock,
+  CheckCircle2,
+  Zap,
+  Crown,
+  Star,
+  Gift,
+  Trophy,
+  Medal,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import { ActivityHeatmap } from "./ActivityHeatmap";
+import { SkillsRadar } from "./SkillsRadar";
+import { BadgesDisplay } from "./BadgesDisplay";
+import { DailyCheckIn } from "./DailyCheckIn";
+import { RecentSubmissions } from "./RecentSubmissions";
+import { EditProfile } from "./EditProfile";
+import { PetDisplay } from "./PetDisplay";
+import { type Pet } from "./PetSystem";
 
 interface UserProfileProps {
   onSignOut?: () => void;
 }
 
 export function UserProfile({ onSignOut }: UserProfileProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'submissions' | 'badges'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "submissions" | "badges"
+  >("overview");
   const [showEditProfile, setShowEditProfile] = useState(false);
 
   const [userData, setUserData] = useState({
-    username: 'JohnDoe',
-    displayName: 'John Doe',
-    email: 'johndoe@example.com',
-    avatar: '',
-    bio: 'Passionate software engineer | Competitive programmer | Love solving algorithmic challenges',
+    username: "JohnDoe",
+    displayName: "John Doe",
+    email: "johndoe@example.com",
+    avatar: "",
+    bio: "Passionate software engineer | Competitive programmer | Love solving algorithmic challenges",
   });
 
   // Demo pet data - in production, this would come from user's actual pet
   const [userPet] = useState<Pet | null>({
-    id: 'demo-pet',
-    type: 'dragon',
-    name: 'Code Dragon',
-    stage: 'child',
+    id: "demo-pet",
+    type: "dragon",
+    name: "Code Dragon",
+    stage: "child",
     level: 5,
     experience: 350,
     hunger: 75,
@@ -57,21 +76,21 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
   };
 
   const recentActivity = [
-    { date: '2025-11-28', count: 5 },
-    { date: '2025-11-27', count: 8 },
-    { date: '2025-11-26', count: 3 },
-    { date: '2025-11-25', count: 12 },
-    { date: '2025-11-24', count: 7 },
+    { date: "2025-11-28", count: 5 },
+    { date: "2025-11-27", count: 8 },
+    { date: "2025-11-26", count: 3 },
+    { date: "2025-11-25", count: 12 },
+    { date: "2025-11-24", count: 7 },
   ];
 
   const handleSaveProfile = (updatedData: any) => {
-    setUserData(prev => ({
+    setUserData((prev) => ({
       ...prev,
       ...updatedData,
     }));
     setShowEditProfile(false);
     // Show success message (you can add a toast notification here)
-    alert('Profile updated successfully!');
+    alert("Profile updated successfully!");
   };
 
   return (
@@ -82,18 +101,23 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
           <div className="flex items-center gap-6">
             <div className="relative">
               {userData.avatar ? (
-                <img src={userData.avatar} alt="Profile" className="w-24 h-24 rounded-full object-cover border-4 border-purple-500/30" />
+                <img
+                  src={userData.avatar}
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full object-cover border-4 border-purple-500/30"
+                />
               ) : (
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl">
-                  {userData.displayName[0]?.toUpperCase() || 'J'}
-                  {userData.displayName.split(' ')[1]?.[0]?.toUpperCase() || 'D'}
+                  {userData.displayName[0]?.toUpperCase() || "J"}
+                  {userData.displayName.split(" ")[1]?.[0]?.toUpperCase() ||
+                    "D"}
                 </div>
               )}
               <div className="absolute -bottom-2 -right-2 bg-yellow-400 rounded-full p-2">
                 <Crown className="w-5 h-5 text-gray-900" />
               </div>
             </div>
-            
+
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl">{userData.displayName}</h1>
@@ -149,7 +173,10 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
           </div>
           <div className="text-3xl mb-1">{userStats.totalSolved}</div>
           <div className="text-sm text-gray-400">
-            {Math.round((userStats.totalSolved / userStats.totalProblems) * 100)}% of all problems
+            {Math.round(
+              (userStats.totalSolved / userStats.totalProblems) * 100
+            )}
+            % of all problems
           </div>
         </div>
 
@@ -181,9 +208,7 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
             <Zap className="w-5 h-5 text-purple-400" />
           </div>
           <div className="text-3xl mb-1">{userStats.contestRating}</div>
-          <div className="text-sm text-gray-400">
-            Top 15% globally
-          </div>
+          <div className="text-sm text-gray-400">Top 15% globally</div>
         </div>
       </div>
 
@@ -191,31 +216,31 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
       <div className="border-b border-gray-800 mb-8">
         <div className="flex gap-1">
           <button
-            onClick={() => setActiveTab('overview')}
+            onClick={() => setActiveTab("overview")}
             className={`px-6 py-3 border-b-2 transition-all ${
-              activeTab === 'overview'
-                ? 'border-purple-500 text-white'
-                : 'border-transparent text-gray-400 hover:text-white'
+              activeTab === "overview"
+                ? "border-purple-500 text-white"
+                : "border-transparent text-gray-400 hover:text-white"
             }`}
           >
             Overview
           </button>
           <button
-            onClick={() => setActiveTab('submissions')}
+            onClick={() => setActiveTab("submissions")}
             className={`px-6 py-3 border-b-2 transition-all ${
-              activeTab === 'submissions'
-                ? 'border-purple-500 text-white'
-                : 'border-transparent text-gray-400 hover:text-white'
+              activeTab === "submissions"
+                ? "border-purple-500 text-white"
+                : "border-transparent text-gray-400 hover:text-white"
             }`}
           >
             Recent Submissions
           </button>
           <button
-            onClick={() => setActiveTab('badges')}
+            onClick={() => setActiveTab("badges")}
             className={`px-6 py-3 border-b-2 transition-all ${
-              activeTab === 'badges'
-                ? 'border-purple-500 text-white'
-                : 'border-transparent text-gray-400 hover:text-white'
+              activeTab === "badges"
+                ? "border-purple-500 text-white"
+                : "border-transparent text-gray-400 hover:text-white"
             }`}
           >
             Badges & Achievements
@@ -224,13 +249,13 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'overview' && (
+      {activeTab === "overview" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Problems Progress */}
             <div className="bg-[#121212] border border-gray-800 rounded-xl p-6">
               <h2 className="text-xl mb-6">Problems Solved</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -238,12 +263,16 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
                       <div className="w-3 h-3 bg-green-400 rounded-full" />
                       <span>Easy</span>
                     </div>
-                    <span className="text-gray-400">{userStats.easyCompleted}/250</span>
+                    <span className="text-gray-400">
+                      {userStats.easyCompleted}/250
+                    </span>
                   </div>
                   <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-green-400 rounded-full transition-all"
-                      style={{ width: `${(userStats.easyCompleted / 250) * 100}%` }}
+                      style={{
+                        width: `${(userStats.easyCompleted / 250) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -254,12 +283,16 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
                       <div className="w-3 h-3 bg-yellow-400 rounded-full" />
                       <span>Medium</span>
                     </div>
-                    <span className="text-gray-400">{userStats.mediumCompleted}/650</span>
+                    <span className="text-gray-400">
+                      {userStats.mediumCompleted}/650
+                    </span>
                   </div>
                   <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-yellow-400 rounded-full transition-all"
-                      style={{ width: `${(userStats.mediumCompleted / 650) * 100}%` }}
+                      style={{
+                        width: `${(userStats.mediumCompleted / 650) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -270,12 +303,16 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
                       <div className="w-3 h-3 bg-red-400 rounded-full" />
                       <span>Hard</span>
                     </div>
-                    <span className="text-gray-400">{userStats.hardCompleted}/350</span>
+                    <span className="text-gray-400">
+                      {userStats.hardCompleted}/350
+                    </span>
                   </div>
                   <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-red-400 rounded-full transition-all"
-                      style={{ width: `${(userStats.hardCompleted / 350) * 100}%` }}
+                      style={{
+                        width: `${(userStats.hardCompleted / 350) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -307,8 +344,8 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
             <div className="bg-[#121212] border border-gray-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl">Featured Badges</h2>
-                <button 
-                  onClick={() => setActiveTab('badges')}
+                <button
+                  onClick={() => setActiveTab("badges")}
                   className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
                   View All →
@@ -316,16 +353,38 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { name: '100 Days', icon: Calendar, color: 'from-orange-500 to-red-500', desc: 'Streak Master' },
-                  { name: 'Speed Demon', icon: Zap, color: 'from-yellow-500 to-orange-500', desc: 'Fast Solver' },
-                  { name: 'Contest Winner', icon: Trophy, color: 'from-purple-500 to-pink-500', desc: '1st Place' },
-                  { name: 'Algorithm Expert', icon: Award, color: 'from-blue-500 to-cyan-500', desc: 'All Hard' },
+                  {
+                    name: "100 Days",
+                    icon: Calendar,
+                    color: "from-orange-500 to-red-500",
+                    desc: "Streak Master",
+                  },
+                  {
+                    name: "Speed Demon",
+                    icon: Zap,
+                    color: "from-yellow-500 to-orange-500",
+                    desc: "Fast Solver",
+                  },
+                  {
+                    name: "Contest Winner",
+                    icon: Trophy,
+                    color: "from-purple-500 to-pink-500",
+                    desc: "1st Place",
+                  },
+                  {
+                    name: "Algorithm Expert",
+                    icon: Award,
+                    color: "from-blue-500 to-cyan-500",
+                    desc: "All Hard",
+                  },
                 ].map((badge, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 text-center hover:border-purple-500/50 transition-all cursor-pointer"
                   >
-                    <div className={`w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-br ${badge.color} flex items-center justify-center`}>
+                    <div
+                      className={`w-12 h-12 mx-auto mb-2 rounded-full bg-gradient-to-br ${badge.color} flex items-center justify-center`}
+                    >
                       <badge.icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="text-sm mb-1">{badge.name}</div>
@@ -340,19 +399,52 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
               <h2 className="text-xl mb-6">Recent Activity</h2>
               <div className="space-y-4">
                 {[
-                  { action: 'Solved', problem: 'Two Sum', difficulty: 'Easy', time: '2 hours ago', color: 'green' },
-                  { action: 'Attempted', problem: 'Median of Two Sorted Arrays', difficulty: 'Hard', time: '5 hours ago', color: 'yellow' },
-                  { action: 'Solved', problem: 'Valid Parentheses', difficulty: 'Easy', time: '1 day ago', color: 'green' },
-                  { action: 'Contest', problem: 'Weekly Contest 372', difficulty: 'Contest', time: '2 days ago', color: 'purple' },
+                  {
+                    action: "Solved",
+                    problem: "Two Sum",
+                    difficulty: "Easy",
+                    time: "2 hours ago",
+                    color: "green",
+                  },
+                  {
+                    action: "Attempted",
+                    problem: "Median of Two Sorted Arrays",
+                    difficulty: "Hard",
+                    time: "5 hours ago",
+                    color: "yellow",
+                  },
+                  {
+                    action: "Solved",
+                    problem: "Valid Parentheses",
+                    difficulty: "Easy",
+                    time: "1 day ago",
+                    color: "green",
+                  },
+                  {
+                    action: "Contest",
+                    problem: "Weekly Contest 372",
+                    difficulty: "Contest",
+                    time: "2 days ago",
+                    color: "purple",
+                  },
                 ].map((activity, idx) => (
-                  <div key={idx} className="flex items-start gap-3 pb-4 border-b border-gray-800 last:border-0 last:pb-0">
-                    <div className={`w-2 h-2 mt-2 rounded-full bg-${activity.color}-400`} />
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 pb-4 border-b border-gray-800 last:border-0 last:pb-0"
+                  >
+                    <div
+                      className={`w-2 h-2 mt-2 rounded-full bg-${activity.color}-400`}
+                    />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-gray-300">{activity.action}</span>
-                        <span className="text-purple-400">{activity.problem}</span>
+                        <span className="text-purple-400">
+                          {activity.problem}
+                        </span>
                       </div>
-                      <div className="text-xs text-gray-500">{activity.time}</div>
+                      <div className="text-xs text-gray-500">
+                        {activity.time}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -362,9 +454,9 @@ export function UserProfile({ onSignOut }: UserProfileProps) {
         </div>
       )}
 
-      {activeTab === 'submissions' && <RecentSubmissions />}
-      
-      {activeTab === 'badges' && <BadgesDisplay />}
+      {activeTab === "submissions" && <RecentSubmissions />}
+
+      {activeTab === "badges" && <BadgesDisplay />}
 
       {/* Edit Profile Modal */}
       {showEditProfile && (

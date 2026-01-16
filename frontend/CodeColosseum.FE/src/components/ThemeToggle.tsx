@@ -1,24 +1,36 @@
-import { useState, useEffect } from 'react';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Sun, Moon, Monitor } from "lucide-react";
 
 interface ThemeToggleProps {
-  theme: 'light' | 'dark' | 'auto';
-  onThemeChange: (theme: 'light' | 'dark' | 'auto') => void;
+  theme: "light" | "dark" | "auto";
+  onThemeChange: (theme: "light" | "dark" | "auto") => void;
 }
 
 export function ThemeToggle({ theme, onThemeChange }: ThemeToggleProps) {
   const [showMenu, setShowMenu] = useState(false);
 
   const getCurrentIcon = () => {
-    if (theme === 'auto') return <Monitor className="w-5 h-5" />;
-    if (theme === 'light') return <Sun className="w-5 h-5" />;
+    if (theme === "auto") return <Monitor className="w-5 h-5" />;
+    if (theme === "light") return <Sun className="w-5 h-5" />;
     return <Moon className="w-5 h-5" />;
   };
 
   const options = [
-    { value: 'light' as const, icon: <Sun className="w-4 h-4" />, label: 'Light' },
-    { value: 'dark' as const, icon: <Moon className="w-4 h-4" />, label: 'Dark' },
-    { value: 'auto' as const, icon: <Monitor className="w-4 h-4" />, label: 'Auto' },
+    {
+      value: "light" as const,
+      icon: <Sun className="w-4 h-4" />,
+      label: "Light",
+    },
+    {
+      value: "dark" as const,
+      icon: <Moon className="w-4 h-4" />,
+      label: "Dark",
+    },
+    {
+      value: "auto" as const,
+      icon: <Monitor className="w-4 h-4" />,
+      label: "Auto",
+    },
   ];
 
   return (
@@ -46,7 +58,7 @@ export function ThemeToggle({ theme, onThemeChange }: ThemeToggleProps) {
                   setShowMenu(false);
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-800 transition-all ${
-                  theme === option.value ? 'text-purple-400' : 'text-gray-300'
+                  theme === option.value ? "text-purple-400" : "text-gray-300"
                 }`}
               >
                 {option.icon}

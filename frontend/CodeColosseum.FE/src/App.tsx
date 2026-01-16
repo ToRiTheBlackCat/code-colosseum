@@ -1,41 +1,58 @@
-import { useState, useEffect } from 'react';
-import { Header } from './components/Header';
-import { ProblemList } from './components/ProblemList';
-import { ProblemDetail } from './components/ProblemDetail';
-import { Leaderboard } from './components/Leaderboard';
-import { AIMentor } from './components/AIMentor';
-import { UserProfile } from './components/UserProfile';
-import { Contests } from './components/Contests';
-import { Shop } from './components/Shop';
-import { MeetingLobby } from './components/MeetingLobby';
-import { MeetingRoom } from './components/MeetingRoom';
-import { Login } from './components/Login';
-import { Signup } from './components/Signup';
+import { useState, useEffect } from "react";
+import { Header } from "./components/Header";
+import { Home } from "./components/Home";
+import { ProblemList } from "./components/ProblemList";
+import { ProblemDetail } from "./components/ProblemDetail";
+import { Leaderboard } from "./components/Leaderboard";
+import { AIMentor } from "./components/AIMentor";
+import { UserProfile } from "./components/UserProfile";
+import { Contests } from "./components/Contests";
+import { Shop } from "./components/Shop";
+import { MeetingLobby } from "./components/MeetingLobby";
+import { MeetingRoom } from "./components/MeetingRoom";
+import { Login } from "./components/Login";
+import { Signup } from "./components/Signup";
 
-type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
+type View =
+  | "home"
+  | "problems"
+  | "problem-detail"
+  | "leaderboard"
+  | "profile"
+  | "contests"
+  | "shop"
+  | "meeting";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authView, setAuthView] = useState<'login' | 'signup'>('login');
-  const [currentView, setCurrentView] = useState<View>('problems');
-  const [selectedProblemId, setSelectedProblemId] = useState<number | null>(null);
+  const [authView, setAuthView] = useState<"login" | "signup">("login");
+  const [currentView, setCurrentView] = useState<View>("home");
+  const [selectedProblemId, setSelectedProblemId] = useState<number | null>(
+    null
+  );
   const [showAIMentor, setShowAIMentor] = useState(false);
-  const [meetingState, setMeetingState] = useState<{ inMeeting: boolean; meetingCode: string; isHost: boolean }>({
+  const [meetingState, setMeetingState] = useState<{
+    inMeeting: boolean;
+    meetingCode: string;
+    isHost: boolean;
+  }>({
     inMeeting: false,
-    meetingCode: '',
+    meetingCode: "",
     isHost: false,
   });
-  const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('dark');
-  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<"light" | "dark" | "auto">("dark");
+  const [effectiveTheme, setEffectiveTheme] = useState<"light" | "dark">(
+    "dark"
+  );
   const [isPremium, setIsPremium] = useState(true);
 
   // Handle auto theme based on time
   useEffect(() => {
     const updateTheme = () => {
-      if (theme === 'auto') {
+      if (theme === "auto") {
         const hour = new Date().getHours();
         // Light mode from 6 AM to 6 PM, dark mode otherwise
-        const autoTheme = hour >= 6 && hour < 18 ? 'light' : 'dark';
+        const autoTheme = hour >= 6 && hour < 18 ? "light" : "dark";
         setEffectiveTheme(autoTheme);
       } else {
         setEffectiveTheme(theme);
@@ -43,9 +60,9 @@ export default function App() {
     };
 
     updateTheme();
-    
+
     // Update every minute if in auto mode
-    if (theme === 'auto') {
+    if (theme === "auto") {
       const interval = setInterval(updateTheme, 60000);
       return () => clearInterval(interval);
     }
@@ -53,17 +70,23 @@ export default function App() {
 
   // Apply theme to document
   useEffect(() => {
-    document.documentElement.classList.toggle('light', effectiveTheme === 'light');
-    document.documentElement.classList.toggle('dark', effectiveTheme === 'dark');
+    document.documentElement.classList.toggle(
+      "light",
+      effectiveTheme === "light"
+    );
+    document.documentElement.classList.toggle(
+      "dark",
+      effectiveTheme === "dark"
+    );
   }, [effectiveTheme]);
 
   const handleSelectProblem = (id: number) => {
     setSelectedProblemId(id);
-    setCurrentView('problem-detail');
+    setCurrentView("problem-detail");
   };
 
   const handleBackToProblems = () => {
-    setCurrentView('problems');
+    setCurrentView("problems");
     setSelectedProblemId(null);
   };
 
@@ -72,44 +95,56 @@ export default function App() {
   };
 
   const handleLeaveMeeting = () => {
-    setMeetingState({ inMeeting: false, meetingCode: '', isHost: false });
+    setMeetingState({ inMeeting: false, meetingCode: "", isHost: false });
   };
 
   const handleLogin = (email: string, password: string) => {
     // In a real app, this would call an API
     setIsAuthenticated(true);
-    setCurrentView('problems');
+    setCurrentView("home");
   };
 
   const handleSignup = (username: string, email: string, password: string) => {
     // In a real app, this would call an API
     setIsAuthenticated(true);
-    setCurrentView('problems');
+    setCurrentView("problems");
   };
 
   const handleSignOut = () => {
     setIsAuthenticated(false);
-    setCurrentView('problems');
-    setAuthView('login');
+    setCurrentView("problems");
+    setAuthView("login");
   };
 
   // Show auth screens if not authenticated
   if (!isAuthenticated) {
-    if (authView === 'login') {
-      return <Login onLogin={handleLogin} onSwitchToSignup={() => setAuthView('signup')} />;
+    if (authView === "login") {
+      return (
+        <Login
+          onLogin={handleLogin}
+          onSwitchToSignup={() => setAuthView("signup")}
+        />
+      );
     } else {
-      return <Signup onSignup={handleSignup} onSwitchToLogin={() => setAuthView('login')} />;
+      return (
+        <Signup
+          onSignup={handleSignup}
+          onSwitchToLogin={() => setAuthView("login")}
+        />
+      );
     }
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      effectiveTheme === 'light' 
-        ? 'bg-white text-gray-900' 
-        : 'bg-[#0a0a0a] text-gray-100'
-    }`}>
-      <Header 
-        currentView={currentView} 
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        effectiveTheme === "light"
+          ? "bg-white text-gray-900"
+          : "bg-[#0a0a0a] text-gray-100"
+      }`}
+    >
+      <Header
+        currentView={currentView}
         setCurrentView={setCurrentView}
         onBackToProblems={handleBackToProblems}
         onSignOut={handleSignOut}
@@ -117,33 +152,40 @@ export default function App() {
         onThemeChange={setTheme}
         isPremium={isPremium}
       />
-      
+
       <main className="relative">
-        {currentView === 'problems' && (
+        {currentView === "home" && (
+          <Home
+            onGetStarted={() => setCurrentView("problems")}
+            onExploreProblems={() => setCurrentView("problems")}
+          />
+        )}
+
+        {currentView === "problems" && (
           <ProblemList onSelectProblem={handleSelectProblem} />
         )}
-        
-        {currentView === 'problem-detail' && selectedProblemId !== null && (
-          <ProblemDetail 
+
+        {currentView === "problem-detail" && selectedProblemId !== null && (
+          <ProblemDetail
             problemId={selectedProblemId}
             onToggleAIMentor={() => setShowAIMentor(!showAIMentor)}
             showAIMentor={showAIMentor}
           />
         )}
-        
-        {currentView === 'leaderboard' && <Leaderboard />}
-        
-        {currentView === 'profile' && <UserProfile onSignOut={handleSignOut} />}
-        
-        {currentView === 'contests' && <Contests />}
-        
-        {currentView === 'shop' && <Shop />}
-        
-        {currentView === 'meeting' && !meetingState.inMeeting && (
+
+        {currentView === "leaderboard" && <Leaderboard />}
+
+        {currentView === "profile" && <UserProfile onSignOut={handleSignOut} />}
+
+        {currentView === "contests" && <Contests />}
+
+        {currentView === "shop" && <Shop />}
+
+        {currentView === "meeting" && !meetingState.inMeeting && (
           <MeetingLobby onJoinMeeting={handleJoinMeeting} />
         )}
 
-        {currentView === 'meeting' && meetingState.inMeeting && (
+        {currentView === "meeting" && meetingState.inMeeting && (
           <MeetingRoom
             meetingCode={meetingState.meetingCode}
             isHost={meetingState.isHost}
@@ -153,8 +195,8 @@ export default function App() {
         )}
       </main>
 
-      {showAIMentor && currentView === 'problem-detail' && (
-        <AIMentor 
+      {showAIMentor && currentView === "problem-detail" && (
+        <AIMentor
           problemId={selectedProblemId!}
           onClose={() => setShowAIMentor(false)}
         />

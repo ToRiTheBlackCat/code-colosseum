@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Crown, Check, Sparkles, MessageSquare, Bot, Mic } from 'lucide-react';
+import { useState } from "react";
+import { Crown, Check, Sparkles, MessageSquare, Bot, Mic } from "lucide-react";
 
 interface PremiumSubscriptionProps {
   userGems: number;
@@ -8,35 +8,42 @@ interface PremiumSubscriptionProps {
   onCancel: () => void;
 }
 
-export function PremiumSubscription({ userGems, isPremium, onSubscribe, onCancel }: PremiumSubscriptionProps) {
+export function PremiumSubscription({
+  userGems,
+  isPremium,
+  onSubscribe,
+  onCancel,
+}: PremiumSubscriptionProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const monthlyPrice = 200;
 
   const premiumFeatures = [
     {
       icon: <MessageSquare className="w-5 h-5" />,
-      title: 'AI Mentor Access',
-      description: 'Get unlimited help from AI Mentor while solving problems'
+      title: "AI Mentor Access",
+      description: "Get unlimited help from AI Mentor while solving problems",
     },
     {
       icon: <Bot className="w-5 h-5" />,
-      title: 'AI Interview Agent',
-      description: 'Virtual AI interviewer in meeting rooms with voice interaction'
+      title: "AI Interview Agent",
+      description:
+        "Virtual AI interviewer in meeting rooms with voice interaction",
     },
     {
       icon: <Mic className="w-5 h-5" />,
-      title: 'Voice-Enabled Interviews',
-      description: 'Practice with AI that speaks and listens to your responses'
+      title: "Voice-Enabled Interviews",
+      description: "Practice with AI that speaks and listens to your responses",
     },
     {
       icon: <Sparkles className="w-5 h-5" />,
-      title: 'Custom Agent Configuration',
-      description: 'Set role, experience level, tech stack, and interview style'
+      title: "Custom Agent Configuration",
+      description:
+        "Set role, experience level, tech stack, and interview style",
     },
     {
       icon: <Crown className="w-5 h-5" />,
-      title: 'Premium Badge',
-      description: 'Show off your premium status with exclusive badge'
+      title: "Premium Badge",
+      description: "Show off your premium status with exclusive badge",
     },
   ];
 
@@ -56,7 +63,9 @@ export function PremiumSubscription({ userGems, isPremium, onSubscribe, onCancel
           </div>
           <div>
             <h3 className="text-xl">Premium Active</h3>
-            <p className="text-sm text-gray-400">You have full access to all premium features</p>
+            <p className="text-sm text-gray-400">
+              You have full access to all premium features
+            </p>
           </div>
         </div>
 
@@ -80,7 +89,9 @@ export function PremiumSubscription({ userGems, isPremium, onSubscribe, onCancel
               <div className="text-yellow-400 mt-0.5">{feature.icon}</div>
               <div className="flex-1">
                 <div className="text-white">{feature.title}</div>
-                <div className="text-gray-400 text-xs">{feature.description}</div>
+                <div className="text-gray-400 text-xs">
+                  {feature.description}
+                </div>
               </div>
               <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
             </div>
@@ -99,7 +110,9 @@ export function PremiumSubscription({ userGems, isPremium, onSubscribe, onCancel
             <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6 max-w-md w-full">
               <h3 className="text-xl mb-2">Cancel Premium?</h3>
               <p className="text-sm text-gray-400 mb-6">
-                You'll lose access to AI Mentor and AI Interview Agent. Your subscription will remain active until the end of the current billing period.
+                You'll lose access to AI Mentor and AI Interview Agent. Your
+                subscription will remain active until the end of the current
+                billing period.
               </p>
               <div className="flex gap-3">
                 <button
@@ -133,7 +146,9 @@ export function PremiumSubscription({ userGems, isPremium, onSubscribe, onCancel
         </div>
         <div>
           <h3 className="text-xl">CodeColosseum Premium</h3>
-          <p className="text-sm text-gray-400">Unlock AI-powered interview practice</p>
+          <p className="text-sm text-gray-400">
+            Unlock AI-powered interview practice
+          </p>
         </div>
       </div>
 
@@ -170,7 +185,7 @@ export function PremiumSubscription({ userGems, isPremium, onSubscribe, onCancel
         disabled={userGems < monthlyPrice}
         className="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed rounded-lg transition-all shadow-lg"
       >
-        {userGems >= monthlyPrice ? 'Subscribe Now' : 'Not Enough Gems'}
+        {userGems >= monthlyPrice ? "Subscribe Now" : "Not Enough Gems"}
       </button>
 
       <p className="text-xs text-gray-500 text-center mt-3">
