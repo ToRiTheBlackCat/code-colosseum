@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Code2, ChevronDown, User } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Code2, ChevronDown, User } from "lucide-react";
 
 interface Cursor {
   userId: string;
@@ -15,11 +15,11 @@ interface CollaborativeCodeEditorProps {
 }
 
 const languages = [
-  { id: 'typescript', name: 'TypeScript', icon: '⬡' },
-  { id: 'javascript', name: 'JavaScript', icon: 'JS' },
-  { id: 'python', name: 'Python', icon: '🐍' },
-  { id: 'java', name: 'Java', icon: '☕' },
-  { id: 'cpp', name: 'C++', icon: 'C++' },
+  { id: "typescript", name: "TypeScript", icon: "⬡" },
+  { id: "javascript", name: "JavaScript", icon: "JS" },
+  { id: "python", name: "Python", icon: "🐍" },
+  { id: "java", name: "Java", icon: "☕" },
+  { id: "cpp", name: "C++", icon: "C++" },
 ];
 
 const starterCodeByLanguage: Record<string, string> = {
@@ -30,27 +30,33 @@ const starterCodeByLanguage: Record<string, string> = {
   cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your solution here\n        \n    }\n};`,
 };
 
-export function CollaborativeCodeEditor({ isHost, participants }: CollaborativeCodeEditorProps) {
-  const [language, setLanguage] = useState('typescript');
+export function CollaborativeCodeEditor({
+  isHost,
+  participants,
+}: CollaborativeCodeEditorProps) {
+  const [language, setLanguage] = useState("typescript");
   const [code, setCode] = useState(starterCodeByLanguage[language]);
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [cursors, setCursors] = useState<Cursor[]>([]);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const currentLang = languages.find(l => l.id === language) || languages[0];
+  const currentLang = languages.find((l) => l.id === language) || languages[0];
 
   // Simulate other participants typing
   useEffect(() => {
     const interval = setInterval(() => {
       if (participants.length > 1) {
-        const randomParticipant = participants[Math.floor(Math.random() * participants.length)];
-        setCursors([{
-          userId: randomParticipant.id,
-          username: randomParticipant.username,
-          x: Math.random() * 80 + 10,
-          y: Math.random() * 80 + 10,
-          color: randomParticipant.color,
-        }]);
+        const randomParticipant =
+          participants[Math.floor(Math.random() * participants.length)];
+        setCursors([
+          {
+            userId: randomParticipant.id,
+            username: randomParticipant.username,
+            x: Math.random() * 80 + 10,
+            y: Math.random() * 80 + 10,
+            color: randomParticipant.color,
+          },
+        ]);
       }
     }, 2000);
 
@@ -72,7 +78,10 @@ export function CollaborativeCodeEditor({ isHost, participants }: CollaborativeC
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#1e1e1e] relative" onMouseMove={handleMouseMove}>
+    <div
+      className="h-full flex flex-col bg-[#1e1e1e] relative"
+      onMouseMove={handleMouseMove}
+    >
       {/* Language Selector */}
       <div className="border-b border-gray-800 px-4 py-2 flex items-center justify-between bg-[#252525]">
         <div className="flex items-center gap-2">
@@ -85,7 +94,7 @@ export function CollaborativeCodeEditor({ isHost, participants }: CollaborativeC
             </div>
           )}
         </div>
-        
+
         <div className="relative">
           <button
             onClick={() => setShowLangMenu(!showLangMenu)}
@@ -93,7 +102,11 @@ export function CollaborativeCodeEditor({ isHost, participants }: CollaborativeC
           >
             <span className="text-lg">{currentLang.icon}</span>
             <span>{currentLang.name}</span>
-            <ChevronDown className={`w-4 h-4 transition-transform ${showLangMenu ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                showLangMenu ? "rotate-180" : ""
+              }`}
+            />
           </button>
 
           {showLangMenu && (
@@ -103,7 +116,9 @@ export function CollaborativeCodeEditor({ isHost, participants }: CollaborativeC
                   key={lang.id}
                   onClick={() => handleLanguageChange(lang.id)}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-purple-500/10 transition-all text-left ${
-                    lang.id === language ? 'bg-purple-500/20 text-purple-400' : ''
+                    lang.id === language
+                      ? "bg-purple-500/20 text-purple-400"
+                      : ""
                   }`}
                 >
                   <span className="text-lg">{lang.icon}</span>
@@ -145,9 +160,10 @@ export function CollaborativeCodeEditor({ isHost, participants }: CollaborativeC
           className="w-full h-full bg-transparent text-gray-100 resize-none outline-none relative z-10"
           spellCheck={false}
           style={{
-            fontFamily: 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace',
-            fontSize: '14px',
-            lineHeight: '1.6',
+            fontFamily:
+              'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace',
+            fontSize: "14px",
+            lineHeight: "1.6",
             tabSize: 4,
           }}
         />

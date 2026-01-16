@@ -1,5 +1,14 @@
-import { useState } from 'react';
-import { Zap, Mail, Lock, Eye, EyeOff, User, Github, Chrome } from 'lucide-react';
+import { useState } from "react";
+import {
+  Rocket,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  User,
+  Github,
+  Chrome,
+} from "lucide-react";
 
 interface SignupProps {
   onSignup: (username: string, email: string, password: string) => void;
@@ -7,40 +16,40 @@ interface SignupProps {
 }
 
 export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!username || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email');
+    if (!email.includes("@")) {
+      setError("Please enter a valid email");
       return;
     }
 
     if (username.length < 3) {
-      setError('Username must be at least 3 characters');
+      setError("Username must be at least 3 characters");
       return;
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+      setError("Password must be at least 8 characters");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
@@ -49,7 +58,7 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
 
   const handleSocialSignup = (provider: string) => {
     // Simulate social signup
-    onSignup(`user_${provider}`, `demo@${provider}.com`, 'demo');
+    onSignup(`user_${provider}`, `demo@${provider}.com`, "demo");
   };
 
   return (
@@ -59,14 +68,16 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-3">
             <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-3 rounded-xl">
-              <Zap className="w-8 h-8 text-white" />
+              <Rocket className="w-8 h-8 text-white" />
             </div>
             <span className="text-3xl bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               CodeColosseum
             </span>
           </div>
           <h1 className="text-3xl mb-2 text-white">Create Account</h1>
-          <p className="text-gray-400">Join thousands of developers worldwide</p>
+          <p className="text-gray-400">
+            Join thousands of developers worldwide
+          </p>
         </div>
 
         {/* Signup Card */}
@@ -74,7 +85,9 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Username */}
             <div>
-              <label className="block text-sm mb-2 text-gray-300">Username</label>
+              <label className="block text-sm mb-2 text-gray-300">
+                Username
+              </label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
@@ -89,7 +102,9 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
 
             {/* Email */}
             <div>
-              <label className="block text-sm mb-2 text-gray-300">Email Address</label>
+              <label className="block text-sm mb-2 text-gray-300">
+                Email Address
+              </label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
@@ -104,11 +119,13 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
 
             {/* Password */}
             <div>
-              <label className="block text-sm mb-2 text-gray-300">Password</label>
+              <label className="block text-sm mb-2 text-gray-300">
+                Password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
@@ -119,19 +136,27 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Must be at least 8 characters
+              </p>
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm mb-2 text-gray-300">Confirm Password</label>
+              <label className="block text-sm mb-2 text-gray-300">
+                Confirm Password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
@@ -142,7 +167,11 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -163,12 +192,18 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
                   required
                 />
                 <span className="text-gray-400">
-                  I agree to the{' '}
-                  <button type="button" className="text-purple-400 hover:text-purple-300">
+                  I agree to the{" "}
+                  <button
+                    type="button"
+                    className="text-purple-400 hover:text-purple-300"
+                  >
                     Terms of Service
-                  </button>{' '}
-                  and{' '}
-                  <button type="button" className="text-purple-400 hover:text-purple-300">
+                  </button>{" "}
+                  and{" "}
+                  <button
+                    type="button"
+                    className="text-purple-400 hover:text-purple-300"
+                  >
                     Privacy Policy
                   </button>
                 </span>
@@ -190,21 +225,23 @@ export function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
               <div className="w-full border-t border-gray-800"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#121212] text-gray-400">Or sign up with</span>
+              <span className="px-4 bg-[#121212] text-gray-400">
+                Or sign up with
+              </span>
             </div>
           </div>
 
           {/* Social Signup */}
           <div className="grid grid-cols-2 gap-3">
             <button
-              onClick={() => handleSocialSignup('github')}
+              onClick={() => handleSocialSignup("github")}
               className="flex items-center justify-center gap-2 py-3 bg-[#0a0a0a] border border-gray-700 rounded-lg hover:border-gray-600 transition-all text-white"
             >
               <Github className="w-5 h-5" />
               <span>GitHub</span>
             </button>
             <button
-              onClick={() => handleSocialSignup('google')}
+              onClick={() => handleSocialSignup("google")}
               className="flex items-center justify-center gap-2 py-3 bg-[#0a0a0a] border border-gray-700 rounded-lg hover:border-gray-600 transition-all text-white"
             >
               <Chrome className="w-5 h-5" />

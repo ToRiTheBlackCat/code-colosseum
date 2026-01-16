@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { User, Mail, Lock, Upload, X, Camera, Eye, EyeOff } from 'lucide-react';
+import { useState } from "react";
+import { User, Mail, Lock, Upload, X, Camera, Eye, EyeOff } from "lucide-react";
 
 interface EditProfileProps {
   currentUser: {
@@ -8,22 +8,33 @@ interface EditProfileProps {
     avatar: string;
     bio: string;
   };
-  onSave: (userData: { username: string; email: string; avatar: string; bio: string; currentPassword?: string; newPassword?: string }) => void;
+  onSave: (userData: {
+    username: string;
+    email: string;
+    avatar: string;
+    bio: string;
+    currentPassword?: string;
+    newPassword?: string;
+  }) => void;
   onClose: () => void;
 }
 
-export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) {
+export function EditProfile({
+  currentUser,
+  onSave,
+  onClose,
+}: EditProfileProps) {
   const [username, setUsername] = useState(currentUser.username);
   const [email, setEmail] = useState(currentUser.email);
   const [bio, setBio] = useState(currentUser.bio);
   const [avatar, setAvatar] = useState(currentUser.avatar);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,39 +50,39 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!username || !email) {
-      setError('Username and email are required');
+      setError("Username and email are required");
       return;
     }
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email');
+    if (!email.includes("@")) {
+      setError("Please enter a valid email");
       return;
     }
 
     if (username.length < 3) {
-      setError('Username must be at least 3 characters');
+      setError("Username must be at least 3 characters");
       return;
     }
 
     // Validate password change if attempted
     if (isChangingPassword) {
       if (!currentPassword) {
-        setError('Please enter your current password');
+        setError("Please enter your current password");
         return;
       }
       if (!newPassword) {
-        setError('Please enter a new password');
+        setError("Please enter a new password");
         return;
       }
       if (newPassword.length < 8) {
-        setError('New password must be at least 8 characters');
+        setError("New password must be at least 8 characters");
         return;
       }
       if (newPassword !== confirmPassword) {
-        setError('Passwords do not match');
+        setError("Passwords do not match");
         return;
       }
 
@@ -102,11 +113,15 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
             <div className="flex items-center gap-6">
               <div className="relative group">
                 <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30">
-                  {avatar.startsWith('data:') || avatar.startsWith('http') ? (
-                    <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
+                  {avatar.startsWith("data:") || avatar.startsWith("http") ? (
+                    <img
+                      src={avatar}
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl">
-                      {username[0]?.toUpperCase() || 'U'}
+                      {username[0]?.toUpperCase() || "U"}
                     </div>
                   )}
                 </div>
@@ -131,7 +146,9 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
                     className="hidden"
                   />
                 </label>
-                <p className="text-xs text-gray-500 mt-2">JPG, PNG or GIF. Max 2MB</p>
+                <p className="text-xs text-gray-500 mt-2">
+                  JPG, PNG or GIF. Max 2MB
+                </p>
               </div>
             </div>
           </div>
@@ -176,7 +193,9 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
               rows={4}
               className="w-full px-4 py-3 bg-[#0a0a0a] border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 transition-all resize-none"
             />
-            <p className="text-xs text-gray-500 mt-1">{bio.length}/200 characters</p>
+            <p className="text-xs text-gray-500 mt-1">
+              {bio.length}/200 characters
+            </p>
           </div>
 
           {/* Change Password Section */}
@@ -187,7 +206,11 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
               className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors mb-4"
             >
               <Lock className="w-4 h-4" />
-              <span>{isChangingPassword ? 'Cancel Password Change' : 'Change Password'}</span>
+              <span>
+                {isChangingPassword
+                  ? "Cancel Password Change"
+                  : "Change Password"}
+              </span>
             </button>
 
             {isChangingPassword && (
@@ -198,7 +221,7 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
-                      type={showCurrentPassword ? 'text' : 'password'}
+                      type={showCurrentPassword ? "text" : "password"}
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       placeholder="••••••••"
@@ -206,10 +229,16 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
                     />
                     <button
                       type="button"
-                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      onClick={() =>
+                        setShowCurrentPassword(!showCurrentPassword)
+                      }
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                     >
-                      {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {showCurrentPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -220,7 +249,7 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
-                      type={showNewPassword ? 'text' : 'password'}
+                      type={showNewPassword ? "text" : "password"}
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="••••••••"
@@ -231,19 +260,27 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
                       onClick={() => setShowNewPassword(!showNewPassword)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                     >
-                      {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {showNewPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Must be at least 8 characters
+                  </p>
                 </div>
 
                 {/* Confirm New Password */}
                 <div>
-                  <label className="block text-sm mb-2">Confirm New Password</label>
+                  <label className="block text-sm mb-2">
+                    Confirm New Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      type={showConfirmPassword ? "text" : "password"}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
@@ -251,10 +288,16 @@ export function EditProfile({ currentUser, onSave, onClose }: EditProfileProps) 
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                     >
-                      {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {showConfirmPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
                 </div>

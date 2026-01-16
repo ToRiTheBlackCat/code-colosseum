@@ -1,5 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Trophy, Clock, Users, Zap, CheckCircle2, Code2, Flame, Award, Medal, Crown } from 'lucide-react';
+import { useState, useEffect } from "react";
+import {
+  Trophy,
+  Clock,
+  Users,
+  Zap,
+  CheckCircle2,
+  Code2,
+  Flame,
+  Award,
+  Medal,
+  Crown,
+} from "lucide-react";
 
 interface Participant {
   id: number;
@@ -20,21 +31,111 @@ interface ContestRoomProps {
 export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
   const [timeLeft, setTimeLeft] = useState(90 * 60); // 90 minutes in seconds
   const [participants, setParticipants] = useState<Participant[]>([
-    { id: 1, username: 'CodeMaster', avatar: 'CM', rank: 1, score: 18, problemsSolved: 4, currentProblem: 'Problem 4', lastSubmission: '2m ago' },
-    { id: 2, username: 'AlgoWizard', avatar: 'AW', rank: 2, score: 16, problemsSolved: 3, currentProblem: 'Problem 4', lastSubmission: '1m ago' },
-    { id: 3, username: 'JohnDoe', avatar: 'JD', rank: 3, score: 15, problemsSolved: 3, currentProblem: 'Problem 3', lastSubmission: '30s ago' },
-    { id: 4, username: 'ByteNinja', avatar: 'BN', rank: 4, score: 12, problemsSolved: 2, currentProblem: 'Problem 3', lastSubmission: '5m ago' },
-    { id: 5, username: 'DataGuru', avatar: 'DG', rank: 5, score: 12, problemsSolved: 2, currentProblem: 'Problem 4', lastSubmission: '3m ago' },
-    { id: 6, username: 'StackOverflow', avatar: 'SO', rank: 6, score: 10, problemsSolved: 2, currentProblem: 'Problem 2', lastSubmission: '8m ago' },
-    { id: 7, username: 'DevQueen', avatar: 'DQ', rank: 7, score: 8, problemsSolved: 1, currentProblem: 'Problem 3', lastSubmission: '4m ago' },
-    { id: 8, username: 'PyCharm', avatar: 'PC', rank: 8, score: 7, problemsSolved: 1, currentProblem: 'Problem 2', lastSubmission: '6m ago' },
+    {
+      id: 1,
+      username: "CodeMaster",
+      avatar: "CM",
+      rank: 1,
+      score: 18,
+      problemsSolved: 4,
+      currentProblem: "Problem 4",
+      lastSubmission: "2m ago",
+    },
+    {
+      id: 2,
+      username: "AlgoWizard",
+      avatar: "AW",
+      rank: 2,
+      score: 16,
+      problemsSolved: 3,
+      currentProblem: "Problem 4",
+      lastSubmission: "1m ago",
+    },
+    {
+      id: 3,
+      username: "JohnDoe",
+      avatar: "JD",
+      rank: 3,
+      score: 15,
+      problemsSolved: 3,
+      currentProblem: "Problem 3",
+      lastSubmission: "30s ago",
+    },
+    {
+      id: 4,
+      username: "ByteNinja",
+      avatar: "BN",
+      rank: 4,
+      score: 12,
+      problemsSolved: 2,
+      currentProblem: "Problem 3",
+      lastSubmission: "5m ago",
+    },
+    {
+      id: 5,
+      username: "DataGuru",
+      avatar: "DG",
+      rank: 5,
+      score: 12,
+      problemsSolved: 2,
+      currentProblem: "Problem 4",
+      lastSubmission: "3m ago",
+    },
+    {
+      id: 6,
+      username: "StackOverflow",
+      avatar: "SO",
+      rank: 6,
+      score: 10,
+      problemsSolved: 2,
+      currentProblem: "Problem 2",
+      lastSubmission: "8m ago",
+    },
+    {
+      id: 7,
+      username: "DevQueen",
+      avatar: "DQ",
+      rank: 7,
+      score: 8,
+      problemsSolved: 1,
+      currentProblem: "Problem 3",
+      lastSubmission: "4m ago",
+    },
+    {
+      id: 8,
+      username: "PyCharm",
+      avatar: "PC",
+      rank: 8,
+      score: 7,
+      problemsSolved: 1,
+      currentProblem: "Problem 2",
+      lastSubmission: "6m ago",
+    },
   ]);
 
   const problems = [
-    { id: 1, title: 'Two Sum', difficulty: 'Easy', points: 3, solved: 245 },
-    { id: 2, title: 'Valid Parentheses', difficulty: 'Easy', points: 4, solved: 189 },
-    { id: 3, title: 'Longest Substring', difficulty: 'Medium', points: 5, solved: 127 },
-    { id: 4, title: 'Merge K Lists', difficulty: 'Hard', points: 8, solved: 45 },
+    { id: 1, title: "Two Sum", difficulty: "Easy", points: 3, solved: 245 },
+    {
+      id: 2,
+      title: "Valid Parentheses",
+      difficulty: "Easy",
+      points: 4,
+      solved: 189,
+    },
+    {
+      id: 3,
+      title: "Longest Substring",
+      difficulty: "Medium",
+      points: 5,
+      solved: 127,
+    },
+    {
+      id: 4,
+      title: "Merge K Lists",
+      difficulty: "Hard",
+      points: 8,
+      solved: 45,
+    },
   ];
 
   // Countdown timer
@@ -52,19 +153,24 @@ export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
         const updated = [...prev];
         const randomIdx = Math.floor(Math.random() * updated.length);
         const participant = updated[randomIdx];
-        
+
         // Randomly update participant
         if (Math.random() > 0.5) {
           participant.score += Math.floor(Math.random() * 3);
-          participant.problemsSolved = Math.min(participant.problemsSolved + 1, 4);
-          participant.currentProblem = `Problem ${Math.floor(Math.random() * 4) + 1}`;
-          participant.lastSubmission = 'Just now';
+          participant.problemsSolved = Math.min(
+            participant.problemsSolved + 1,
+            4
+          );
+          participant.currentProblem = `Problem ${
+            Math.floor(Math.random() * 4) + 1
+          }`;
+          participant.lastSubmission = "Just now";
         }
-        
+
         // Re-sort by score
         updated.sort((a, b) => b.score - a.score);
-        updated.forEach((p, idx) => p.rank = idx + 1);
-        
+        updated.forEach((p, idx) => (p.rank = idx + 1));
+
         return updated;
       });
     }, 3000);
@@ -75,7 +181,9 @@ export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    return `${h.toString().padStart(2, "0")}:${m
+      .toString()
+      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
   const getRankIcon = (rank: number) => {
@@ -113,7 +221,13 @@ export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
                 <Clock className="w-5 h-5 text-orange-400" />
                 <div>
                   <div className="text-sm text-gray-400">Time Left</div>
-                  <div className={`text-2xl tabular-nums ${timeLeft < 300 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
+                  <div
+                    className={`text-2xl tabular-nums ${
+                      timeLeft < 300
+                        ? "text-red-400 animate-pulse"
+                        : "text-white"
+                    }`}
+                  >
                     {formatTime(timeLeft)}
                   </div>
                 </div>
@@ -154,10 +268,14 @@ export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
                 {problems.map((problem) => {
                   const getDifficultyColor = (diff: string) => {
                     switch (diff) {
-                      case 'Easy': return 'text-green-400 bg-green-400/10 border-green-400/20';
-                      case 'Medium': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
-                      case 'Hard': return 'text-red-400 bg-red-400/10 border-red-400/20';
-                      default: return '';
+                      case "Easy":
+                        return "text-green-400 bg-green-400/10 border-green-400/20";
+                      case "Medium":
+                        return "text-yellow-400 bg-yellow-400/10 border-yellow-400/20";
+                      case "Hard":
+                        return "text-red-400 bg-red-400/10 border-red-400/20";
+                      default:
+                        return "";
                     }
                   };
 
@@ -176,11 +294,19 @@ export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
                               {problem.title}
                             </h3>
                             <div className="flex items-center gap-3 text-sm">
-                              <span className={`px-3 py-1 rounded-lg border ${getDifficultyColor(problem.difficulty)}`}>
+                              <span
+                                className={`px-3 py-1 rounded-lg border ${getDifficultyColor(
+                                  problem.difficulty
+                                )}`}
+                              >
                                 {problem.difficulty}
                               </span>
-                              <span className="text-gray-400">{problem.points} points</span>
-                              <span className="text-gray-500">{problem.solved} solved</span>
+                              <span className="text-gray-400">
+                                {problem.points} points
+                              </span>
+                              <span className="text-gray-500">
+                                {problem.solved} solved
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -211,49 +337,65 @@ export function ContestRoom({ contestId, onExit }: ContestRoomProps) {
                   <div
                     key={participant.id}
                     className={`p-4 border-b border-gray-800 transition-all ${
-                      participant.lastSubmission === 'Just now'
-                        ? 'bg-gradient-to-r from-green-500/10 to-transparent animate-pulse'
+                      participant.lastSubmission === "Just now"
+                        ? "bg-gradient-to-r from-green-500/10 to-transparent animate-pulse"
                         : idx % 2 === 0
-                        ? 'bg-gray-900/30'
-                        : ''
+                        ? "bg-gray-900/30"
+                        : ""
                     }`}
                   >
                     <div className="flex items-center gap-3 mb-2">
                       <div className="flex items-center justify-center w-8">
                         {getRankIcon(participant.rank) || (
-                          <span className="text-gray-400">#{participant.rank}</span>
+                          <span className="text-gray-400">
+                            #{participant.rank}
+                          </span>
                         )}
                       </div>
 
-                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm ${
-                        participant.lastSubmission === 'Just now' ? 'ring-2 ring-green-400' : ''
-                      }`}>
+                      <div
+                        className={`w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm ${
+                          participant.lastSubmission === "Just now"
+                            ? "ring-2 ring-green-400"
+                            : ""
+                        }`}
+                      >
                         {participant.avatar}
                       </div>
 
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className={participant.username === 'JohnDoe' ? 'text-purple-400' : ''}>
+                          <span
+                            className={
+                              participant.username === "JohnDoe"
+                                ? "text-purple-400"
+                                : ""
+                            }
+                          >
                             {participant.username}
                           </span>
-                          {participant.username === 'JohnDoe' && (
+                          {participant.username === "JohnDoe" && (
                             <span className="text-xs px-2 py-0.5 bg-purple-500/20 border border-purple-500/30 rounded">
                               You
                             </span>
                           )}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {participant.currentProblem ? `Working on ${participant.currentProblem}` : 'Idle'}
+                          {participant.currentProblem
+                            ? `Working on ${participant.currentProblem}`
+                            : "Idle"}
                         </div>
                       </div>
 
                       <div className="text-right">
                         <div className="text-lg">{participant.score}</div>
-                        <div className="text-xs text-gray-400">{participant.problemsSolved}/4</div>
+                        <div className="text-xs text-gray-400">
+                          {participant.problemsSolved}/4
+                        </div>
                       </div>
                     </div>
 
-                    {participant.lastSubmission === 'Just now' && (
+                    {participant.lastSubmission === "Just now" && (
                       <div className="flex items-center gap-2 text-xs text-green-400 ml-11">
                         <Zap className="w-3 h-3" />
                         Just submitted!

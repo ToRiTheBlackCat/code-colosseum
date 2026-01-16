@@ -1,4 +1,16 @@
-import { X, Trophy, Target, Flame, TrendingUp, Award, Crown, Star, Medal, CheckCircle2, Code2 } from 'lucide-react';
+import {
+  X,
+  Trophy,
+  Target,
+  Flame,
+  TrendingUp,
+  Award,
+  Crown,
+  Star,
+  Medal,
+  CheckCircle2,
+  Code2,
+} from "lucide-react";
 
 interface UserProfileModalProps {
   userId: number;
@@ -8,9 +20,9 @@ interface UserProfileModalProps {
 export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
   // Mock user data
   const user = {
-    username: 'CodeMaster',
-    displayName: 'Alex Johnson',
-    avatar: 'CM',
+    username: "CodeMaster",
+    displayName: "Alex Johnson",
+    avatar: "CM",
     rank: 1,
     totalSolved: 487,
     easyCompleted: 198,
@@ -21,24 +33,72 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
     reputation: 15742,
     contestRating: 2145,
     acceptanceRate: 82.3,
-    joinedDate: 'January 2024',
+    joinedDate: "January 2024",
     badges: [
-      { name: 'Legendary Coder', icon: Crown, color: 'from-yellow-400 to-orange-500', rarity: 'Legendary' },
-      { name: '100 Day Streak', icon: Flame, color: 'from-orange-500 to-red-500', rarity: 'Legendary' },
-      { name: 'Contest Champion', icon: Trophy, color: 'from-purple-500 to-pink-500', rarity: 'Epic' },
-      { name: 'Speed Demon', icon: Star, color: 'from-yellow-500 to-orange-500', rarity: 'Epic' },
-      { name: 'Algorithm Master', icon: Award, color: 'from-blue-500 to-cyan-500', rarity: 'Rare' },
-      { name: 'Problem Solver', icon: CheckCircle2, color: 'from-green-500 to-emerald-500', rarity: 'Rare' },
+      {
+        name: "Legendary Coder",
+        icon: Crown,
+        color: "from-yellow-400 to-orange-500",
+        rarity: "Legendary",
+      },
+      {
+        name: "100 Day Streak",
+        icon: Flame,
+        color: "from-orange-500 to-red-500",
+        rarity: "Legendary",
+      },
+      {
+        name: "Contest Champion",
+        icon: Trophy,
+        color: "from-purple-500 to-pink-500",
+        rarity: "Epic",
+      },
+      {
+        name: "Speed Demon",
+        icon: Star,
+        color: "from-yellow-500 to-orange-500",
+        rarity: "Epic",
+      },
+      {
+        name: "Algorithm Master",
+        icon: Award,
+        color: "from-blue-500 to-cyan-500",
+        rarity: "Rare",
+      },
+      {
+        name: "Problem Solver",
+        icon: CheckCircle2,
+        color: "from-green-500 to-emerald-500",
+        rarity: "Rare",
+      },
     ],
     recentActivity: [
-      { problem: 'Median of Two Sorted Arrays', difficulty: 'Hard', status: 'Accepted', time: '1h ago' },
-      { problem: 'LRU Cache', difficulty: 'Medium', status: 'Accepted', time: '3h ago' },
-      { problem: 'Trapping Rain Water', difficulty: 'Hard', status: 'Accepted', time: '5h ago' },
+      {
+        problem: "Median of Two Sorted Arrays",
+        difficulty: "Hard",
+        status: "Accepted",
+        time: "1h ago",
+      },
+      {
+        problem: "LRU Cache",
+        difficulty: "Medium",
+        status: "Accepted",
+        time: "3h ago",
+      },
+      {
+        problem: "Trapping Rain Water",
+        difficulty: "Hard",
+        status: "Accepted",
+        time: "5h ago",
+      },
     ],
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <div
         className="bg-[#0a0a0a] border border-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto m-4"
         onClick={(e) => e.stopPropagation()}
@@ -83,7 +143,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                   <span>{user.reputation} Rep</span>
                 </div>
               </div>
-              <div className="text-sm text-gray-500">Joined {user.joinedDate}</div>
+              <div className="text-sm text-gray-500">
+                Joined {user.joinedDate}
+              </div>
             </div>
           </div>
         </div>
@@ -103,7 +165,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                 <Flame className="w-5 h-5 text-orange-400" />
                 {user.currentStreak}
               </div>
-              <div className="text-xs text-gray-500 mt-1">Max: {user.maxStreak}</div>
+              <div className="text-xs text-gray-500 mt-1">
+                Max: {user.maxStreak}
+              </div>
             </div>
 
             <div className="bg-[#121212] border border-gray-800 rounded-xl p-4">
@@ -114,7 +178,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
 
             <div className="bg-[#121212] border border-gray-800 rounded-xl p-4">
               <div className="text-gray-400 text-sm mb-1">Contest Rating</div>
-              <div className="text-2xl text-purple-400">{user.contestRating}</div>
+              <div className="text-2xl text-purple-400">
+                {user.contestRating}
+              </div>
               <div className="text-xs text-green-400 mt-1">+45 this week</div>
             </div>
           </div>
@@ -129,7 +195,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                     <div className="w-3 h-3 bg-green-400 rounded-full" />
                     <span>Easy</span>
                   </div>
-                  <span className="text-gray-400">{user.easyCompleted}/300</span>
+                  <span className="text-gray-400">
+                    {user.easyCompleted}/300
+                  </span>
                 </div>
                 <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                   <div
@@ -145,7 +213,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                     <div className="w-3 h-3 bg-yellow-400 rounded-full" />
                     <span>Medium</span>
                   </div>
-                  <span className="text-gray-400">{user.mediumCompleted}/700</span>
+                  <span className="text-gray-400">
+                    {user.mediumCompleted}/700
+                  </span>
                 </div>
                 <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                   <div
@@ -161,7 +231,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                     <div className="w-3 h-3 bg-red-400 rounded-full" />
                     <span>Hard</span>
                   </div>
-                  <span className="text-gray-400">{user.hardCompleted}/400</span>
+                  <span className="text-gray-400">
+                    {user.hardCompleted}/400
+                  </span>
                 </div>
                 <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                   <div
@@ -182,7 +254,9 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                   key={idx}
                   className="bg-[#121212] border border-gray-800 rounded-lg p-4 hover:border-purple-500/50 transition-all"
                 >
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${badge.color} flex items-center justify-center mb-2`}>
+                  <div
+                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${badge.color} flex items-center justify-center mb-2`}
+                  >
                     <badge.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-sm mb-1">{badge.name}</div>
@@ -199,10 +273,14 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
               {user.recentActivity.map((activity, idx) => {
                 const getDiffColor = (diff: string) => {
                   switch (diff) {
-                    case 'Easy': return 'text-green-400';
-                    case 'Medium': return 'text-yellow-400';
-                    case 'Hard': return 'text-red-400';
-                    default: return 'text-gray-400';
+                    case "Easy":
+                      return "text-green-400";
+                    case "Medium":
+                      return "text-yellow-400";
+                    case "Hard":
+                      return "text-red-400";
+                    default:
+                      return "text-gray-400";
                   }
                 };
 
@@ -215,7 +293,11 @@ export function UserProfileModal({ userId, onClose }: UserProfileModalProps) {
                       <CheckCircle2 className="w-5 h-5 text-green-400" />
                       <div>
                         <div className="mb-1">{activity.problem}</div>
-                        <div className={`text-sm ${getDiffColor(activity.difficulty)}`}>
+                        <div
+                          className={`text-sm ${getDiffColor(
+                            activity.difficulty
+                          )}`}
+                        >
                           {activity.difficulty}
                         </div>
                       </div>

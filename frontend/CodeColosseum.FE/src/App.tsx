@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { Home } from './components/Home';
 import { ProblemList } from './components/ProblemList';
 import { ProblemDetail } from './components/ProblemDetail';
 import { Leaderboard } from './components/Leaderboard';
@@ -12,12 +13,12 @@ import { MeetingRoom } from './components/MeetingRoom';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
 
-type View = 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
+type View = 'home' | 'problems' | 'problem-detail' | 'leaderboard' | 'profile' | 'contests' | 'shop' | 'meeting';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authView, setAuthView] = useState<'login' | 'signup'>('login');
-  const [currentView, setCurrentView] = useState<View>('problems');
+  const [currentView, setCurrentView] = useState<View>('home');
   const [selectedProblemId, setSelectedProblemId] = useState<number | null>(null);
   const [showAIMentor, setShowAIMentor] = useState(false);
   const [meetingState, setMeetingState] = useState<{ inMeeting: boolean; meetingCode: string; isHost: boolean }>({
@@ -119,6 +120,13 @@ export default function App() {
       />
       
       <main className="relative">
+        {currentView === 'home' && (
+          <Home 
+            onGetStarted={() => setCurrentView('problems')}
+            onExploreProblems={() => setCurrentView('problems')}
+          />
+        )}
+        
         {currentView === 'problems' && (
           <ProblemList onSelectProblem={handleSelectProblem} />
         )}

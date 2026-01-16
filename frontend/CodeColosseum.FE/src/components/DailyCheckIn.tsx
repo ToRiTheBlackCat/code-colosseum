@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Calendar, Flame, Gift, Star, CheckCircle2 } from 'lucide-react';
+import { useState } from "react";
+import { Calendar, Flame, Gift, Star, CheckCircle2 } from "lucide-react";
 
 interface DailyCheckInProps {
   streak: number;
@@ -44,19 +44,25 @@ export function DailyCheckIn({ streak }: DailyCheckInProps) {
             key={reward.day}
             className={`relative aspect-square rounded-lg border-2 flex flex-col items-center justify-center transition-all ${
               reward.unlocked
-                ? 'bg-purple-500/10 border-purple-500/50'
+                ? "bg-purple-500/10 border-purple-500/50"
                 : reward.special
-                ? 'bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-yellow-500/30'
-                : 'bg-gray-800 border-gray-700'
+                ? "bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-yellow-500/30"
+                : "bg-gray-800 border-gray-700"
             }`}
           >
             {reward.unlocked && (
               <CheckCircle2 className="absolute -top-1 -right-1 w-4 h-4 text-green-400" />
             )}
             <div className="text-xs text-gray-400 mb-0.5">D{reward.day}</div>
-            <div className={`text-xs flex items-center gap-0.5 ${
-              reward.special ? 'text-yellow-400' : reward.unlocked ? 'text-purple-400' : 'text-gray-500'
-            }`}>
+            <div
+              className={`text-xs flex items-center gap-0.5 ${
+                reward.special
+                  ? "text-yellow-400"
+                  : reward.unlocked
+                  ? "text-purple-400"
+                  : "text-gray-500"
+              }`}
+            >
               {reward.special && <Star className="w-3 h-3" />}
               <span>+{reward.points}</span>
             </div>

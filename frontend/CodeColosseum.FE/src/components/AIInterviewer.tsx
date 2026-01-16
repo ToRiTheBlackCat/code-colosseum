@@ -1,6 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
-import { Bot, Mic, MicOff, Volume2, VolumeX, MessageSquare, Zap, Activity } from 'lucide-react';
-import type { AIAgentSettings } from "./AIAgentConfig";
+import { useState, useEffect, useRef } from "react";
+import {
+  Bot,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  MessageSquare,
+  Zap,
+  Activity,
+} from "lucide-react";
+import { type AIAgentSettings } from "./AIAgentConfig";
 
 interface AIInterviewerProps {
   settings: AIAgentSettings;
@@ -11,18 +20,22 @@ interface AIInterviewerProps {
 interface Message {
   id: string;
   text: string;
-  sender: 'ai' | 'user';
+  sender: "ai" | "user";
   timestamp: Date;
   isVoice?: boolean;
 }
 
-export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProps) {
+export function AIInterviewer({
+  settings,
+  isActive,
+  onClose,
+}: AIInterviewerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
   const [voiceEnabled, setVoiceEnabled] = useState(settings.voiceEnabled);
-  const [transcript, setTranscript] = useState('');
+  const [transcript, setTranscript] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Simulated AI responses based on interview style
@@ -33,22 +46,22 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
         `That's a good start. How would you optimize this for larger datasets?`,
         `I see. What data structure would you use to implement this efficiently?`,
         `Good thinking! Can you walk me through your algorithm step by step?`,
-        `Let's dive deeper. What edge cases should we consider here?`
+        `Let's dive deeper. What edge cases should we consider here?`,
       ],
       behavioral: [
         `Tell me more about how you handled that situation.`,
         `That's a great example! What did you learn from that experience?`,
         `How did you collaborate with your team during that project?`,
         `What would you do differently if faced with a similar challenge?`,
-        `Excellent! Can you give me another example of leadership in action?`
+        `Excellent! Can you give me another example of leadership in action?`,
       ],
       mixed: [
         `Good answer! Now, let's discuss the technical implementation.`,
         `I appreciate your perspective. How would you code this solution?`,
         `That shows great problem-solving skills. What's the Big O notation here?`,
         `Interesting! How does this relate to the system design principles?`,
-        `Perfect! Let's move on to discussing scalability.`
-      ]
+        `Perfect! Let's move on to discussing scalability.`,
+      ],
     };
 
     const styleResponses = responses[settings.interviewStyle];
@@ -60,13 +73,19 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
     if (isActive && messages.length === 0) {
       const greeting = {
         id: Date.now().toString(),
-        text: `Hello! I'm ${settings.name}, a ${settings.role} with ${settings.experience} of experience. I'll be conducting your ${settings.interviewStyle} interview today focusing on ${settings.focusAreas.join(', ')}. Are you ready to begin?`,
-        sender: 'ai' as const,
+        text: `Hello! I'm ${settings.name}, a ${settings.role} with ${
+          settings.experience
+        } of experience. I'll be conducting your ${
+          settings.interviewStyle
+        } interview today focusing on ${settings.focusAreas.join(
+          ", "
+        )}. Are you ready to begin?`,
+        sender: "ai" as const,
         timestamp: new Date(),
-        isVoice: voiceEnabled
+        isVoice: voiceEnabled,
       };
       setMessages([greeting]);
-      
+
       if (voiceEnabled) {
         speakText(greeting.text);
       }
@@ -75,24 +94,24 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
 
   // Auto-scroll to bottom
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // Simulated speech synthesis
   const speakText = (text: string) => {
     setIsSpeaking(true);
-    
+
     // Mock voice synthesis
-    if ('speechSynthesis' in window && voiceEnabled) {
+    if ("speechSynthesis" in window && voiceEnabled) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.9;
       utterance.pitch = 1;
       utterance.volume = 1;
-      
+
       utterance.onend = () => {
         setIsSpeaking(false);
       };
-      
+
       window.speechSynthesis.speak(utterance);
     } else {
       // Simulate speaking duration
@@ -105,22 +124,24 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
   // Simulated speech recognition
   const startListening = () => {
     setIsListening(true);
-    setTranscript('');
+    setTranscript("");
 
     // Mock voice recognition
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const SpeechRecognition =
+        (window as any).SpeechRecognition ||
+        (window as any).webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
-      
+
       recognition.continuous = false;
       recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      recognition.lang = "en-US";
 
       recognition.onresult = (event: any) => {
         const current = event.resultIndex;
         const transcript = event.results[current][0].transcript;
         setTranscript(transcript);
-        
+
         if (event.results[current].isFinal) {
           handleSendMessage(transcript, true);
           setIsListening(false);
@@ -139,7 +160,8 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
     } else {
       // Fallback: simulate voice input
       setTimeout(() => {
-        const mockResponse = "I would use a hash map to solve this problem efficiently.";
+        const mockResponse =
+          "I would use a hash map to solve this problem efficiently.";
         setTranscript(mockResponse);
         handleSendMessage(mockResponse, true);
         setIsListening(false);
@@ -149,36 +171,39 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
 
   const stopListening = () => {
     setIsListening(false);
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
   };
 
-  const handleSendMessage = (text: string = userInput, isVoice: boolean = false) => {
+  const handleSendMessage = (
+    text: string = userInput,
+    isVoice: boolean = false
+  ) => {
     if (!text.trim()) return;
 
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       text: text.trim(),
-      sender: 'user',
+      sender: "user",
       timestamp: new Date(),
-      isVoice
+      isVoice,
     };
-    setMessages(prev => [...prev, userMessage]);
-    setUserInput('');
+    setMessages((prev) => [...prev, userMessage]);
+    setUserInput("");
 
     // Simulate AI thinking and response
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         text: getAIResponse(text),
-        sender: 'ai',
+        sender: "ai",
         timestamp: new Date(),
-        isVoice: voiceEnabled
+        isVoice: voiceEnabled,
       };
-      setMessages(prev => [...prev, aiResponse]);
-      
+      setMessages((prev) => [...prev, aiResponse]);
+
       if (voiceEnabled) {
         speakText(aiResponse.text);
       }
@@ -188,8 +213,8 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
   const toggleVoice = () => {
     const newVoiceState = !voiceEnabled;
     setVoiceEnabled(newVoiceState);
-    
-    if (!newVoiceState && 'speechSynthesis' in window) {
+
+    if (!newVoiceState && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
     }
@@ -197,10 +222,10 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
 
   const getAgentAvatar = () => {
     const colors = {
-      professional: 'from-blue-500 to-indigo-500',
-      friendly: 'from-green-500 to-teal-500',
-      challenging: 'from-red-500 to-orange-500',
-      supportive: 'from-purple-500 to-pink-500'
+      professional: "from-blue-500 to-indigo-500",
+      friendly: "from-green-500 to-teal-500",
+      challenging: "from-red-500 to-orange-500",
+      supportive: "from-purple-500 to-pink-500",
     };
     return colors[settings.personality];
   };
@@ -218,10 +243,12 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
             </div>
             <div>
               <h3 className="text-white">{settings.name}</h3>
-              <p className="text-xs text-white/80">{settings.role} • {settings.experience}</p>
+              <p className="text-xs text-white/80">
+                {settings.role} • {settings.experience}
+              </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {isSpeaking && (
               <div className="flex items-center gap-1 text-white/80 text-xs bg-white/20 px-2 py-1 rounded-full">
@@ -229,7 +256,7 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
                 Speaking...
               </div>
             )}
-            
+
             <button
               onClick={toggleVoice}
               className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
@@ -240,7 +267,7 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
                 <VolumeX className="w-4 h-4 text-white" />
               )}
             </button>
-            
+
             <button
               onClick={onClose}
               className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors text-white"
@@ -249,7 +276,7 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
             </button>
           </div>
         </div>
-        
+
         {/* Agent Info */}
         <div className="mt-3 flex flex-wrap gap-2">
           <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs text-white">
@@ -258,8 +285,11 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
           <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs text-white capitalize">
             {settings.interviewStyle}
           </span>
-          {settings.techStack.slice(0, 3).map(tech => (
-            <span key={tech} className="px-2 py-0.5 bg-white/20 rounded-full text-xs text-white">
+          {settings.techStack.slice(0, 3).map((tech) => (
+            <span
+              key={tech}
+              className="px-2 py-0.5 bg-white/20 rounded-full text-xs text-white"
+            >
               {tech}
             </span>
           ))}
@@ -271,13 +301,15 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${
+              message.sender === "user" ? "justify-end" : "justify-start"
+            }`}
           >
             <div
               className={`max-w-[80%] rounded-lg p-3 ${
-                message.sender === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-800 text-gray-100'
+                message.sender === "user"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-800 text-gray-100"
               }`}
             >
               <div className="flex items-start gap-2">
@@ -292,19 +324,19 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
             </div>
           </div>
         ))}
-        
+
         {isListening && (
           <div className="flex justify-end">
             <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-3 max-w-[80%]">
               <div className="flex items-center gap-2 text-blue-400">
                 <Mic className="w-4 h-4 animate-pulse" />
-                <span className="text-sm">{transcript || 'Listening...'}</span>
+                <span className="text-sm">{transcript || "Listening..."}</span>
               </div>
             </div>
           </div>
         )}
-        
-        {isSpeaking && messages[messages.length - 1]?.sender === 'ai' && (
+
+        {isSpeaking && messages[messages.length - 1]?.sender === "ai" && (
           <div className="flex justify-start">
             <div className="bg-gray-800/50 rounded-lg p-2 flex items-center gap-2">
               <Activity className="w-4 h-4 text-green-400 animate-pulse" />
@@ -312,7 +344,7 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -323,19 +355,21 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-            placeholder={voiceEnabled ? "Type or use voice..." : "Type your response..."}
+            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+            placeholder={
+              voiceEnabled ? "Type or use voice..." : "Type your response..."
+            }
             className="flex-1 px-4 py-2 bg-black/30 border border-gray-700 rounded-lg focus:border-blue-500 outline-none text-sm"
           />
-          
+
           {voiceEnabled && (
             <button
               onClick={isListening ? stopListening : startListening}
               disabled={isSpeaking}
               className={`px-4 py-2 rounded-lg transition-all ${
                 isListening
-                  ? 'bg-red-500 hover:bg-red-600 animate-pulse'
-                  : 'bg-blue-500 hover:bg-blue-600'
+                  ? "bg-red-500 hover:bg-red-600 animate-pulse"
+                  : "bg-blue-500 hover:bg-blue-600"
               } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {isListening ? (
@@ -345,7 +379,7 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
               )}
             </button>
           )}
-          
+
           <button
             onClick={() => handleSendMessage()}
             disabled={!userInput.trim() || isSpeaking}
@@ -354,10 +388,10 @@ export function AIInterviewer({ settings, isActive, onClose }: AIInterviewerProp
             <MessageSquare className="w-4 h-4" />
           </button>
         </div>
-        
+
         <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
           <span>Interview Style: {settings.interviewStyle}</span>
-          <span>Focus: {settings.focusAreas.join(', ')}</span>
+          <span>Focus: {settings.focusAreas.join(", ")}</span>
         </div>
       </div>
     </div>
