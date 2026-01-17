@@ -50,3 +50,21 @@ namespace CodeColosseum.API.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
+        {
+            var result = await _sender.Send(command);
+
+            if (result.IsFailure)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+    }
+}
