@@ -27,63 +27,51 @@ namespace CodeColosseum.Shared.Application.Behaviors
             var validationResults = await Task.WhenAll(
                 _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
-            var failures = validationResults
+            var errors = validationResults
                 .SelectMany(r => r.Errors)
                 .Where(f => f != null)
-                .ToList();
+                .Select(f => new Error(
+                    f.PropertyName, 
+                    f.ErrorMessage  
+                ))
+                .Distinct() 
+                .ToArray();
 
-            if (failures.Count != 0)
+            if (errors.Length != 0)
             {
-                var firstError = failures.First();
-                var errorObject = new Error("Validation.Error", firstError.ErrorMessage);
-                string message = "Validation Failed";
-
-                // REFLECTION
-                // Call automaticall Result.Failure 
-
-                var resultType = typeof(TResponse);
-
-                // Case 1: TResponse is Result<T> 
-                if (resultType.IsGenericType && resultType.GetGenericTypeDefinition() == typeof(Result<>))
-                {
-                    var resultValueType = resultType.GetGenericArguments()[0]; 
-
-                    var failureMethod = typeof(Result)
-                        .GetMethods()
-                        .FirstOrDefault(m =>
-                            m.Name == "Failure" &&
-                            m.IsGenericMethod &&
-                            m.GetParameters().Length == 2); 
-
-                    if (failureMethod != null)
-                    {
-                        var genericMethod = failureMethod.MakeGenericMethod(resultValueType);
-                        var result = genericMethod.Invoke(null, new object[] { errorObject, message });
-                        return (TResponse)result!;
-                    }
-                }
-
-                // Case 2: TResponse is normal Result (Non-generic)
-                else if (resultType == typeof(Result))
-                {
-                    var failureMethod = typeof(Result)
-                        .GetMethods()
-                        .FirstOrDefault(m =>
-                            m.Name == "Failure" &&
-                            !m.IsGenericMethod &&
-                            m.GetParameters().Length == 2); 
-
-                    if (failureMethod != null)
-                    {
-                        var result = failureMethod.Invoke(null, new object[] { errorObject, message });
-                        return (TResponse)result!;
-                    }
-                }
-
-                throw new ValidationException(failures); // Fallback
+                return CreateValidationResult<TResponse>(errors);
             }
 
             return await next();
+        }
+
+        private static TResult CreateValidationResult<TResult>(Error[] errors)
+        {
+            if (typeof(TResult) == typeof(Result))
+            {
+                return (TResult)(object)new ValidationResult(errors, "Validation failed");
+            }
+
+            //  Result<T> (Generic)
+            var resultType = typeof(TResult);
+
+            if (resultType.IsGenericType && resultType.GetGenericTypeDefinition() == typeof(Result<>))
+            {
+                var resultValueType = resultType.GetGenericArguments()[0];
+
+                var validationResultType = typeof(ValidationResult<>).MakeGenericType(resultValueType);
+
+                // --- SỬA LỖI Ở ĐÂY ---
+                // Constructor for ValidationResult<T>  (Error[], string).
+                var validationResult = Activator.CreateInstance(
+                    validationResultType,
+                    new object[] { errors, "Validation Failure" }
+                );
+
+                return (TResult)validationResult!;
+            }
+
+            throw new ValidationException(errors.Select(e => new FluentValidation.Results.ValidationFailure(e.Code, e.Description)));
         }
     }
 }

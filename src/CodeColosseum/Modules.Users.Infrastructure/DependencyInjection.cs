@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Modules.Users.Application.UserFeatures.Abstractions;
 using Modules.Users.Domain.Entities;
+using Modules.Users.Infrastructure.Auth;
 using Modules.Users.Infrastructure.Database;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace Modules.Users.Infrastructure
 {
@@ -27,10 +29,16 @@ namespace Modules.Users.Infrastructure
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
+                //Configure UserName
+                options.User.AllowedUserNameCharacters = null;
             })
-                .AddRoles<AppRole>()                    
-                .AddEntityFrameworkStores<UsersDbContext>() // Connect to DB
+                .AddRoles<AppRole>()
+                .AddEntityFrameworkStores<UsersDbContext>() 
                 .AddDefaultTokenProviders();
+
+            // Configure JWT
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
             return services;
         }
     }
