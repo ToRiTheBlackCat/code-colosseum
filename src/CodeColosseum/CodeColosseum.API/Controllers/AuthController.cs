@@ -34,3 +34,19 @@ namespace CodeColosseum.API.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Confirm resiter api
+        /// </summary>
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpCommand command)
+        {
+            var result = await _sender.Send(command);
+
+            if (result.IsFailure)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
